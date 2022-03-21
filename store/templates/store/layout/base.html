@@ -13,12 +13,17 @@
     {% tailwind_css %}
 </head>
 
-<body>
-    {% include "store/layout/header.html" %}
+<body class="flex flex-col min-h-screen w-screen">
 
-    {% block content %}{% endblock content %}
+    {% block contentAlone %}
+        {% include "store/layout/header.html" %}
 
-    {% include "store/layout/footer.html" %}
+        {% block content %}{% endblock content %}
+
+        {% include "store/layout/footer.html" %}
+    {% endblock contentAlone %}
+
+    
 
     <script>
         let menuBar = document.querySelector('#menuBar')

@@ -5,7 +5,8 @@ from mkplace.settings import AUTH_USER_MODEL
 from store.models import Order
 
 class Shopper(AbstractUser):
-    pass
+    def __str__(self) -> str:
+        return super().username
 
 class Cart(Model):
     user = ForeignKey(AUTH_USER_MODEL, on_delete=CASCADE)
