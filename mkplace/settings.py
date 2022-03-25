@@ -136,3 +136,4 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "account.Shopper"
 TAILWIND_APP_NAME = 'theme'
+AUTHENTICATION_BACKENDS = ['account.backends.MultiAuthBackend']

@@ -16,25 +16,23 @@ def login(request):
     if request.user.is_authenticated == True:
         redirect('/')
     if request.method == "POST":
-        if request.POST.get("email") != "" and request.POST.get("password") != "":
-            try:
-                validate_email(request.POST.get("email"))
-            except ValidationError:
-                return render(request, "store/login.html", { "error": "Email incorrecte", "email": request.POST.get("email") })
-            email = request.POST.get("email")
+        if request.POST.get("login") != "" and request.POST.get("password") != "":
+            login = request.POST.get("login")
             password = request.POST.get("password")
-            user = authenticate(email=email, password=password)
+            user = authenticate(request, username=login, password=password)
             if user is not None:
                 return redirect("/")
             else:
-                return render(request, "store/login.html", { "error": "Email ou mot de passe incorrecte", "email": request.POST.get("email") })
+                return render(request, "store/login.html", { "error": "Identifiants ou mot de passe incorrecte", "email": request.POST.get("email") })
+        else:
+            return render(request, "store/login.html", { "error": "Identifiants incorrecte", "email": request.POST.get("email") })
     return render(request, "store/login.html", {"email": ""})
 
 def register(request):
     if request.user.is_authenticated == True:
         redirect('/')
     if request.method == "POST":
-        if request.POST.get("email") != "" and request.POST.get("password") != "" and request.POST.get("password_confirmation") != "":
+        if request.POST.get("email") != "" and request.POST.get("username") != "" and request.POST.get("phone") != "" and request.POST.get("password") != "" and request.POST.get("password_confirmation") != "":
             try:
                 validate_email(request.POST.get("email"))
             except ValidationError:
@@ -42,11 +40,14 @@ def register(request):
             if request.POST.get("password") != request.POST.get("password_confirmation"):
                 return render(request, "store/register.html", { "error": "Les 2 mot de passes ne correspondes pas !", "email": request.POST.get("email") })
             email = request.POST.get("email")
+            username = request.POST.get("username")
+            phone = request.POST.get("phone")
             password = request.POST.get("password")
-            user = Shopper.objects.create_user("aaaaa", email, password)
-            user.username = "aab"
+            user = Shopper.objects.create_user(username, email, password)
+            user.phone = phone
             user.save()
             return redirect("/connexion")
+        else: return render(request, "store/register.html", { "error": "Renseignez tous les champs !", "email": request.POST.get("email") })
     return render(request, "store/register.html",{ "categories": Categorie.objects.all() })
 
 def logout_view(request):

@@ -23,13 +23,19 @@
             {% csrf_token %}
             <input autofocus
                    class="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
-                   name="email" placeholder="Adresse email" type="email">
+                   name="email" placeholder="Adresse email" type="email" required>
+                   <input autofocus
+                   class="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
+                   name="username" placeholder="Nom d'utilisateur" type="text" required>
+                   <input autofocus
+                   class="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
+                   name="phone" placeholder="Numéro" type="tel" required>
             <input autofocus
                    class="text-xs w-full mb-4 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
-                   name="password" placeholder="Mot de passe" type="password">
+                   name="password" placeholder="Mot de passe" type="password" required>
                    <input autofocus
                    class="text-xs w-full mb-4 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
-                   name="password_confirmation" placeholder="Re-tapez le mot de passe" type="password">
+                   name="password_confirmation" placeholder="Re-tapez le mot de passe" type="password" required>
             <button type="submit" class=" text-sm text-center bg-blue-300 text-white py-1 rounded font-medium">
                 S'inscrire
             </button>
