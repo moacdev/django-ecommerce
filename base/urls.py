@@ -1,4 +1,4 @@
-"""mkplace URL Configuration
+"""base URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -20,6 +20,23 @@ from store.models import Categorie, Product
 from store.views import categories, category, homepage, login, product, register
 
 
+def accountInfo(request):
+    return render(request, "store/account.html", { "categories": Categorie.objects.all() })
+def changePwd(request):
+    return render(request, "store/change-password.html", { "categories": Categorie.objects.all() })
+def wishList(request):
+    return render(request, "store/wishlist.html", { "categories": Categorie.objects.all() })
+
+def cart(request):
+    return render(request, "store/cart.html", { "categories": Categorie.objects.all() })
+def orders(request):
+    return render(request, "store/orders.html", { "categories": Categorie.objects.all() })
+def search(request):
+    return render(request, "store/search.html", { "categories": Categorie.objects.all() })
+def helpFAQ(request):
+    return render(request, "store/faq.html", { "categories": Categorie.objects.all() })
+
+
 urlpatterns = [
     path('', homepage),
     path('connexion/', login),
@@ -27,5 +44,16 @@ urlpatterns = [
     path('categories/', categories),
     path('categories/<str:category>', category),
     path('categories/<str:category>/<str:product>', product),
+
+
+    path('mon-compte/', accountInfo),
+    path('liste-de-souhaits', wishList),
+    path('mon-panier', cart),
+    path('mes-commandes', orders),
+    path('recherche/', search),
+    path('faq/', helpFAQ),
+
+
+
     path('admin/', admin.site.urls),
 ]

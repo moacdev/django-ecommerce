@@ -1,6 +1,6 @@
 from django.db.models import *
 
-from mkplace.settings import AUTH_USER_MODEL
+from base.settings import AUTH_USER_MODEL
 
 class Categorie(Model):
     label = CharField(max_length=128, blank=True)

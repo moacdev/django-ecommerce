@@ -1,6 +1,6 @@
 from django.db.models import *
 from django.contrib.auth.models import AbstractUser
-from mkplace.settings import AUTH_USER_MODEL
+from base.settings import AUTH_USER_MODEL
 
 from store.models import Order
 
