@@ -6,27 +6,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>{% block titre %}{% endblock titre %}</title>
     {% block css %}{% endblock css %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" /> 
-    {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" /> {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/notyf.css' %}">
 </head>
 
 <body class="flex flex-col min-h-screen w-screen">
 
-    {% block contentAlone %}
-        {% include "store/layout/header.html" %}
+    {% block contentAlone %} {% include "store/layout/header.html" %} {% block content %}{% endblock content %} {% include "store/layout/footer.html" %} {% endblock contentAlone %}
 
-        {% block content %}{% endblock content %}
 
-        {% include "store/layout/footer.html" %}
-    {% endblock contentAlone %}
-
-    
     <script src="{% static '/js/axios.js' %}"></script>
     <script src="{% static '/js/alpine.js' %}"></script>
-    
+    <script src="{% static '/js/notyf.js' %}"></script>
+
 </body>
 
 </html>

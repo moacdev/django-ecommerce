@@ -42,7 +42,8 @@
 
         <!-- account content -->
         <div class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0" x-show="tabIndex == 0">
-            <form action="#" method="post" x-on:submit="e => submitChangeprofilInfo(e)">
+            <form action="#" x-ref="editProfil" method="post" x-on:submit="e => submitChangeprofilInfo(e, $refs.editProfil)">
+                {% csrf_token %}
                 <h3 class="text-lg font-medium capitalize mb-4">
                     Profile Information,
                 </h3>
@@ -131,7 +132,8 @@
 
         <!-- account content -->
         <div class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0" x-show="tabIndex == 3">
-            <form action="#" method="post" x-on:submit="e => submitChangePassword(e)" class="">
+            <form action="#" method="post" x-ref="chPwdForm" x-on:submit="e => submitChangePassword(e, $refs.chPwdForm)" class="">
+                {% csrf_token %}
                 <h3 class="text-lg font-medium capitalize mb-4">
                     Changer de mot de passe
                 </h3>
@@ -144,7 +146,7 @@
                             <span class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer">
                         <i class="far fa-eye-slash"></i>
                     </span>
-                            <input type="password" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" placeholder="Entrez votre mot de passe">
+                            <input type="password" name="password" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" placeholder="Entrez votre mot de passe">
                         </div>
                     </div>
                     <div>
@@ -155,7 +157,7 @@
                             <span class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer">
                         <i class="far fa-eye-slash"></i>
                     </span>
-                            <input type="password" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="password" placeholder="Entrez le nouveau mot de passe">
+                            <input type="password" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="new_password" placeholder="Entrez le nouveau mot de passe">
                         </div>
                     </div>
                     <div>
@@ -233,9 +235,10 @@
 
         <!-- account content -->
         <div class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0" x-show="tabIndex == 1">
-            <form action="#" method="post" @submit="e => submitChangeAddress(e)">
+            <form action="#" x-ref="addressForm" method="post" @submit="e => submitChangeAddress(e, $refs.addressForm)">
+                {% csrf_token %}
                 <h3 class="text-lg font-medium capitalize mb-4">
-                    Manage Address
+                    Votre adresse/localité (utile pour les livraison)
                 </h3>
                 <div class="space-y-4">
                     <!-- Form row -->
@@ -243,67 +246,52 @@
                         <!-- Single input -->
                         <div>
                             <label class="text-gray-600 mb-2 block">
-                        Full Name
+                        Pays
                     </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" value="John">
+                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="country" placeholder="Pays" value="{{ address.country }}">
                         </div>
                         <!-- single input end -->
                         <!-- single input -->
                         <div>
                             <label class="text-gray-600 mb-2 block">
-                        Phone Number
+                        Ville
                     </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" value="+123 456 789">
+                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="city" value="{{ address.city }}">
                         </div>
                         <!-- Single input end -->
                     </div>
-                    <!-- Form row end -->
                     <div class="grid sm:grid-cols-2 gap-4">
                         <div>
                             <label class="text-gray-600 mb-2 block">
-                        Country
-                    </label>
-                            <select class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400">
-                        <option>Bangladesh</option>
-                        <option>Bidesh</option>
-                    </select>
+                                Commune
+                            </label>
+                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="common" value="{{ address.common }}">
                         </div>
+
                         <div>
                             <label class="text-gray-600 mb-2 block">
-                        Region
-                    </label>
-                            <select class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400">
-                        <option>Dhaka</option>
-                        <option>Noakhali</option>
-                    </select>
+                                Quartier
+                            </label>
+                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="quarter" value="{{ address.quarter }}">
                         </div>
                     </div>
+
                     <div class="grid sm:grid-cols-2 gap-4">
                         <div>
                             <label class="text-gray-600 mb-2 block">
-                        City
-                    </label>
-                            <select class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400">
-                        <option>Dhaka-North</option>
-                        <option>Dhaka-South</option>
-                    </select>
+                                Rue et porte
+                            </label>
+                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="streetDoor" value="{{ address.street_door }}">
                         </div>
+
                         <div>
                             <label class="text-gray-600 mb-2 block">
-                        Area
-                    </label>
-                            <select class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400">
-                        <option>Notun Bazar</option>
-                        <option>Gulshan</option>
-                    </select>
+                                Code postal (Optionel)
+                            </label>
+                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="zipcode" value="{{ address.zipcode }}">
                         </div>
                     </div>
-                    <div>
-                        <label class="text-gray-600 mb-2 block">
-                    Address
-                </label>
-                        <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" value="Badda Notun Bazar">
-                    </div>
+
                 </div>
                 <div class="mt-6">
                     <button type="submit" class="px-6 py-2 text-center text-white bg-primary border border-primary rounded transition uppercase font-roboto font-medium">
@@ -370,7 +358,7 @@
 
 </div>
 
-<script>
+<script defer>
     let data = () => {
         return {
             tabIndex: 0,
@@ -378,22 +366,83 @@
             changeAddressLoading: false,
             changeprofilInfoLoading: false,
             changePaymentMethodLoading: false,
-            submitChangePassword: function(e) {
+            submitChangePassword: function(e, form) {
                 e.preventDefault()
-                this.changePasswordLoading = !this.changePasswordLoading
-                console.log(this.changePasswordLoading);
+                notyf = new window.Notyf()
+                this.changePasswordLoading = true
+                const fD = new FormData(form)
+                axios.post("/api/account/change-password", fD).then(({
+                    data
+                }) => {
+                    if (data.isOk == true) {
+                        notyf.success('Terminé')
+                    } else if (data.error_type == "password-invalid") {
+                        notyf.error('Le mot de passe actuel est incorrecte')
+                    } else if (data.error_type == "fields-invalid") {
+                        notyf.error('Echec, vérifiez les champs')
+                    } else {
+                        notyf.error('L\opération à échouée')
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    notyf.error('Une erreur s\'est produite')
+                }).finally(() => {
+                    this.changePasswordLoading = false
+                })
             },
-            submitChangeAddress: function(e) {
+            submitChangeAddress: function(e, form) {
                 e.preventDefault()
+                notyf = new window.Notyf()
                 this.changeAddressLoading = true
+                const fD = new FormData(form)
+                axios.post("/api/account/change-addresses-info", fD).then(({
+                    data
+                }) => {
+                    if (data.isOk == true) {
+                        notyf.success('Terminé')
+                    } else {
+                        notyf.error('L\opération à échouée')
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    notyf.error('Une erreur s\'est produite')
+                }).finally(() => {
+                    this.changeAddressLoading = false
+                })
             },
-            submitChangeprofilInfo: function(e) {
+            submitChangeprofilInfo: function(e, form) {
                 e.preventDefault()
+                notyf = new window.Notyf()
                 this.changeprofilInfoLoading = true
+                const fD = new FormData(form)
+                axios.post("/api/account/change-profil-info", fD).then(({
+                    data
+                }) => {
+                    if (data.isOk == true) {
+                        notyf.success('Terminé')
+                    } else {
+                        notyf.error('L\opération à échouée')
+                    }
+                }).catch(err => {
+                    console.log(err);
+                }).finally(() => {
+                    this.changeprofilInfoLoading = false
+                })
             },
-            submitChangePaymentMethod: function(e) {
+            submitChangePaymentMethod: function(e, form) {
                 e.preventDefault()
+                notyf = new window.Notyf()
                 this.changePaymentMethodLoading = true
+                const fD = new FormData(form)
+                axios.post("/api/account/change-payment-info", fD).then(({
+                    data
+                }) => {
+                    console.log(data);
+                }).catch(err => {
+                    console.log(err);
+                }).finally(() => {
+                    this.changePaymentMethodLoading = false
+                })
             },
 
 
