@@ -99,9 +99,28 @@ def apiChangeAddresses(request):
     return JsonResponse({ "isOk": True })
 
 def apiChangeProfilInfo(request):
-    return render(request, "store/faq.html", { "categories": Categorie.objects.all() })
+    # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
+    if request.method != 'POST' and request.user.is_authenticated != True:
+        raise PermissionDenied()
+
+    username = request.POST.get('username')
+    email = request.POST.get('email')
+    phone = request.POST.get('phone')
+
+    request.user.username = username
+    request.user.email = email
+    request.user.phone = phone
+    request.user.save()
+
+    # On return à la vue une reponse comme quoi tous ses bien passée
+    return JsonResponse({ "isOk": True })
+
 def apiChangePaymentInfo(request):
-    return render(request, "store/faq.html", { "categories": Categorie.objects.all() })
+    # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
+    if request.method != 'POST' and request.user.is_authenticated != True:
+        raise PermissionDenied()
+    # On return à la vue une reponse comme quoi tous ses bien passée
+    return JsonResponse({ "isOk": True })
 
 
 urlpatterns = [
