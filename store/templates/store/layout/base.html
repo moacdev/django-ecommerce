@@ -11,16 +11,23 @@
     {% block css %}{% endblock css %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" /> {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/notyf.css' %}">
+    <link rel="stylesheet" href="{% static 'css/select2.css' %}">
 </head>
 
-<body class="flex flex-col min-h-screen w-screen">
+<body class="flex flex-col min-h-screen w-screen bg-gray-200">
 
-    {% block contentAlone %} {% include "store/layout/header.html" %} {% block content %}{% endblock content %} {% include "store/layout/footer.html" %} {% endblock contentAlone %}
+    {% block contentAlone %} {% include "store/layout/header.html" %}
+    <div class="w-full md:max-w-5xl flex flex-col mx-auto bg-white shadow">
+        {% block content %}{% endblock content %}
+    </div>
+    {% include "store/layout/footer.html" %} {% endblock contentAlone %}
 
 
     <script src="{% static '/js/axios.js' %}"></script>
     <script src="{% static '/js/alpine.js' %}"></script>
     <script src="{% static '/js/notyf.js' %}"></script>
+    <script src="{% static '/js/select2.js' %}"></script>
+    <script src="{% static '/js/main.js' %}"></script>
 
 </body>
 

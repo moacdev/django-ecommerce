@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
-from account.models import Address
+from account.models import Address, Cart
 from store.models import Categorie, Product
 from store.views import categories, category, homepage, login, product, register
 from django.core.exceptions import PermissionDenied
@@ -46,7 +46,9 @@ def wishList(request):
 def cart(request):
     if request.user.is_authenticated != True:
         return redirect(to="/connexion")
-    return render(request, "store/cart.html", { "categories": Categorie.objects.all() })
+    # Récupere le panier de utilisateur
+    userCart = Cart.objects.filter(user=request.user, ordered=False).first()
+    return render(request, "store/cart.html", { "categories": Categorie.objects.all(), 'cart': userCart })
 def orders(request):
     if request.user.is_authenticated != True:
         return redirect(to="/connexion")
@@ -122,6 +124,16 @@ def apiChangePaymentInfo(request):
     # On return à la vue une reponse comme quoi tous ses bien passée
     return JsonResponse({ "isOk": True })
 
+def apiGetCart(request):
+     # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
+    if request.method != 'POST' and request.user.is_authenticated != True:
+        raise PermissionDenied()
+    # Récupere le panier de utilisateur
+    userCart = Cart.objects.filter(user=request.user, ordered=False).first()
+    print(userCart)
+    # On return la reponse a la vue
+    return JsonResponse({ "isOk": True, 'cart': userCart  })
+
 
 urlpatterns = [
     path('', homepage),
@@ -143,6 +155,7 @@ urlpatterns = [
     path('api/account/change-addresses-info', apiChangeAddresses),
     path('api/account/change-profil-info', apiChangeProfilInfo),
     path('api/account/change-payment-info', apiChangePaymentInfo),
+    path('api/get-cart', apiGetCart),
 
 
 
