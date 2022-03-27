@@ -1,8 +1,8 @@
 {% extends 'store/layout/base.html' %} {% load static %} {% block titre %} Mon compte {% endblock titre %} {% block content %}
 
 <!-- breadcrum -->
-<div class="pt-4 container flex gap-3 items-center">
-    <a href="/" class="text-primary text-base">
+<div class="pt-4 container rounded-t-lg flex gap-3 items-center bg-white">
+    <a href="/" class="text-orange-600 text-base">
         <i class="fas fa-home"></i>
     </a>
     <span class="text-sm text-gray-400"><i class="fas fa-chevron-right"></i></span>
@@ -10,7 +10,7 @@
 </div>
 <!-- breadcrum end -->
 
-<div class="border-b border-gray-200 flex flex-col" x-data="data">
+<div class="border-b rounded-b-lg border-gray-200 container flex flex-col bg-white" x-data="data">
     <ul class="flex flex-wrap justify-center -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
         <li class="">
             <a x-on:click="tabIndex = 0" x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 0, 'border-blue-600 text-blue-600': tabIndex == 0 } " href="#" class="flex p-4 rounded-t-lg border-b-2 group">

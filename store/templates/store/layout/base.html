@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="{% static 'css/select2.css' %}">
 </head>
 
-<body class="flex flex-col min-h-screen w-screen bg-gray-200">
+<body class="flex flex-col min-h-screen w-screen bg-gray-300">
 
     {% block contentAlone %} {% include "store/layout/header.html" %}
-    <div class="w-full md:max-w-5xl flex flex-col mx-auto bg-white shadow">
-        {% block content %}{% endblock content %}
-    </div>
+    <!-- <div class="w-full md:max-w-5xl flex flex-col mx-auto "> -->
+    {% block content %}{% endblock content %}
+    <!-- </div> -->
     {% include "store/layout/footer.html" %} {% endblock contentAlone %}
 
 
