@@ -1,6 +1,6 @@
 # django-ecommerce
 
-Pré-requis:
+Pré-requis:\
 --- Git\
 --- Python3.10+
 ## Deploiemnt

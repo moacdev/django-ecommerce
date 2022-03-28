@@ -13,12 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import json
+from math import prod
 from django.contrib import admin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
+from django.core import serializers
 from account.models import Address, Cart
-from store.models import Categorie, Product
+from store.models import Categorie, Order, Product
 from store.views import categories, category, homepage, login, product, register
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
@@ -129,10 +132,42 @@ def apiGetCart(request):
     if request.method != 'POST' and request.user.is_authenticated != True:
         raise PermissionDenied()
     # Récupere le panier de utilisateur
-    userCart = Cart.objects.filter(user=request.user, ordered=False).first()
-    print(userCart)
+    userCart = Cart.objects.select_related().filter(user=request.user, ordered=False)
+    cartCount = Cart.objects.filter(user=request.user, ordered=False).count()
     # On return la reponse a la vue
-    return JsonResponse({ "isOk": True, 'cart': userCart  })
+    return JsonResponse({ "isOk": True, 'cart': serializers.serialize('json', userCart), 'cartCount':cartCount  })
+
+def apiAddToCart(request):
+     # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
+    if request.method != 'POST' and request.user.is_authenticated != True:
+        raise PermissionDenied()
+
+    productID = (json.loads(request.body))['productID']
+    qty = 1
+    if 'qty' in str(request.body):
+        qty = (json.loads(request.body)).get('qty')
+    if productID is None:
+        return JsonResponse({ "isOk": False })
+
+    user = request.user
+
+    # Recuperation du produit
+    product = Product.objects.filter(pk=productID).first()
+    if product is None:
+        return JsonResponse({ "isOk": False, 'error_type': "product-not-exist" })
+
+    # Verifie si l'utilisateur n'a pas déjà le produit dans son panier
+    isUserHasInCart = Cart.objects.filter(user=user, product=product, ordered=False).first()
+    if isUserHasInCart:
+        return JsonResponse({ "isOk": False, 'error_type': "product-in-cart" })
+        
+    # on le cree
+    Cart.objects.create(user=user, product=product, quantity=qty)
+    cartCount = Cart.objects.filter(user=user, ordered=False).count()
+    
+    
+    # On return la reponse a la vue
+    return JsonResponse({ "isOk": True, 'cartCount': cartCount  })
 
 
 urlpatterns = [
@@ -156,6 +191,7 @@ urlpatterns = [
     path('api/account/change-profil-info', apiChangeProfilInfo),
     path('api/account/change-payment-info', apiChangePaymentInfo),
     path('api/get-cart', apiGetCart),
+    path('api/add-to-cart', apiAddToCart),
 
 
 

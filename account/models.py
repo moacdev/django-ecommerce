@@ -24,8 +24,9 @@ class Address(Model):
 
 class Cart(Model):
     user = ForeignKey(AUTH_USER_MODEL, on_delete=CASCADE)
-    orders = ManyToManyField(Order)
-    ordered = BooleanField(default=False)
+    product = ForeignKey('store.Product', on_delete=CASCADE)
+    ordered = BooleanField(blank=True, null=True, default=False)
+    quantity = IntegerField(default=1)
     ordered_date = DateField(blank=True, null=True)
     def __str__(self):
-        return f"Panier de {self.user}"
+        return f"{self.product} au panier de {self.user}"

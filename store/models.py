@@ -26,9 +26,9 @@ class Product(Model):
 
 class Order(Model):
     user = ForeignKey(AUTH_USER_MODEL, on_delete=CASCADE)
-    product = ForeignKey('store.Product', on_delete=CASCADE)
-    quantity = IntegerField(default=1)
-    ordered = BooleanField(default=False)
+    cart = ManyToManyField('account.Cart')
+    finished = BooleanField(default=False)
+    finished_date = DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.quantity} {self.product} par {self.user}"
