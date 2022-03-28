@@ -32,9 +32,7 @@ def accountInfo(request):
         return redirect(to="/connexion")
     
     user = request.user
-    address = Address.objects.get(user=user)
-
-    print(address)
+    address = Address.objects.filter(user=user).first()
 
     return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'user': request.user, 'address': address })
 def changePwd(request):
@@ -133,9 +131,27 @@ def apiGetCart(request):
         raise PermissionDenied()
     # Récupere le panier de utilisateur
     userCart = Cart.objects.select_related().filter(user=request.user, ordered=False)
+    cart = []
+    cartSum = 0
+    for _cart in userCart:
+        userID = _cart.user.id
+        cartSum += _cart.product.price
+        _product = {
+            'label': _cart.product.label,
+            'slug': _cart.product.label,
+            'stock': _cart.product.stock,
+            'price': _cart.product.price,
+            'image1': _cart.product.image1.url,
+        }
+        data = {
+            'userID': userID,
+            'product': _product,
+            'quantity': _cart.quantity
+        }
+        cart.append(data)
     cartCount = Cart.objects.filter(user=request.user, ordered=False).count()
     # On return la reponse a la vue
-    return JsonResponse({ "isOk": True, 'cart': serializers.serialize('json', userCart), 'cartCount':cartCount  })
+    return JsonResponse({ "isOk": True, 'cart': cart[:4], 'cartCount':cartCount, 'cartSum': cartSum  })
 
 def apiAddToCart(request):
      # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié

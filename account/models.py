@@ -8,6 +8,7 @@ from store.models import Order
 
 class Shopper(AbstractUser):
     phone = CharField(unique=True, null=True, max_length=15)
+    email = EmailField('Adresse email', unique=True)
     def __str__(self) -> str:
         return super().username
 

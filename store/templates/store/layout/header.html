@@ -149,10 +149,10 @@
                 To: "translate-x-full"
             -->
                 <div class="pointer-events-auto w-screen max-w-md">
-                    <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                        <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                    <div class="flex h-full flex-col bg-white shadow-xl">
+                        <div class="flex-1 py-6">
                             <div class="flex items-start justify-between">
-                                <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Votre panier</h2>
+                                <h2 class="text-lg font-medium text-gray-900 px-4 sm:px-6" id="slide-over-title">Votre panier</h2>
                                 <div class="ml-3 flex h-7 items-center">
                                     <button @click="toggleSideCart()" type="button" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                         <span class="sr-only">Fermer</span>
@@ -168,25 +168,25 @@
                                 <div class="flow-root">
                                     <div class="hidden" x-ref="csrfmiddlewaretokenContainer">{% csrf_token %}</div>
 
-                                    <ul x-show="orders.length > 0 && !cartLoading" role="list" class="-my-6 divide-y divide-gray-200">
-                                        <template x-for="(order, orderIndex) in orders" :key="orderIndex">
-                                            <li class="flex py-6">
-                                                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                    <img src="{{order.product.image1}}" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
+                                    <ul x-show="cart.length > 0 && !cartLoading" role="list" class="-my-6 divide-y divide-gray-200 flex flex-col">
+                                        <template x-for="(_cart, cartIndex) in cart" :key="cartIndex">
+                                            <li class="flex py-6 bg-neutral-300  px-4 sm:px-6">
+                                                <div class="h-16 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                                    <img :src="_cart.product.image1" :alt="_cart.product.label" class="h-full w-full object-cover object-center">
                                                 </div>
 
                                                 <div class="ml-4 flex flex-1 flex-col">
                                                     <div>
                                                         <div class="flex justify-between text-base font-medium text-gray-900">
                                                             <h3>
-                                                                <a href="#">{{order.product.label}}</a>
+                                                                <span x-text="_cart.product.label"></span>
                                                             </h3>
-                                                            <p class="ml-4">{{order.product.price}} Fcfa</p>
+                                                            <p class="ml-4 font-mono"><span x-text="_cart.product.price"></span> Fcfa</p>
                                                         </div>
                                                         <!-- <p class="mt-1 text-sm text-gray-500">Salmon</p> -->
                                                     </div>
                                                     <div class="flex flex-1 items-end justify-between text-sm">
-                                                        <p class="text-gray-500">Qt: {{order.quantity}}</p>
+                                                        <p class="text-gray-500">Qt: <span x-text="_cart.quantity"></span></p>
 
                                                         <div class="flex">
                                                             <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Enlever</button>
@@ -198,7 +198,7 @@
 
                                         <!-- More products... -->
                                     </ul>
-                                    <span class="m-auto flex text-center" x-show="orders.length < 1 && !cartLoading">Aucun produit dans le panier</span>
+                                    <span class="m-auto flex text-center" x-show="cart.length < 1 && !cartLoading">Aucun produit dans le panier</span>
                                     <svg x-show="cartLoading" class="h-6 w-10 m-auto flex fill-current text-gray-800" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
                                         <rect y="10" width="15" height="120" rx="6">
                                             <animate attributeName="height"
@@ -255,10 +255,10 @@
                             </div>
                         </div>
 
-                        <div x-show="priceSum > 0" class="border-t border-gray-200 py-6 px-4 sm:px-6">
+                        <div x-show="cartSum > 0" class="border-t border-gray-200 py-6 px-4 sm:px-6">
                             <div class="flex justify-between text-base font-medium text-gray-900">
                                 <p>Total</p>
-                                <p><span x-text="priceSum"></span> Fcfa</p>
+                                <p><span x-text="cartSum"></span> Fcfa</p>
                             </div>
                             <!-- <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p> -->
                             <div class="mt-6">
