@@ -1,8 +1,10 @@
+import math
 from django.forms import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import logout
 from account.models import Shopper
+from base.helpers import format_price
 from store.models import Categorie, Product
 from django.core.validators import validate_email
 from django.contrib.auth import authenticate
@@ -10,10 +12,15 @@ from django.contrib.auth.models import User
 
 
 def homepage(request):
-    return render(request, 'store/index.html', { "categories": Categorie.objects.all(), "products": Product.objects.all() })
+    products = Product.objects.all()
+    for _product in products:
+        _product.price = format_price(str(_product.price))
+            
+        
+    return render(request, 'store/index.html', { "categories": Categorie.objects.all(), "products": products })
 
 def login(request):
-    if request.user.is_authenticated == True:
+    if request.user.id != None:
         redirect('/')
     if request.method == "POST":
         if request.POST.get("login") != "" and request.POST.get("password") != "":
@@ -29,7 +36,7 @@ def login(request):
     return render(request, "store/login.html", {"email": ""})
 
 def register(request):
-    if request.user.is_authenticated == True:
+    if request.user.id != None:
         redirect('/')
     if request.method == "POST":
         if request.POST.get("email") != "" and request.POST.get("username") != "" and request.POST.get("phone") != "" and request.POST.get("password") != "" and request.POST.get("password_confirmation") != "":

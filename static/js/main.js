@@ -34,6 +34,8 @@ function app() {
                     notyf.error("Ce produit est déjà dans votre panier !")
                 } else if (data.error_type == 'product-not-exist') {
                     notyf.error("Ce produit n'est plus disponble !")
+                } else if (data.error_type == 'not-logged') {
+                    window.location.href = "/connexion"
                 } else {
                     notyf.error("Produit non ajouté au panier !")
                 }
@@ -60,6 +62,8 @@ function app() {
                     this.cart = data.cart
                     this.cartSum = data.cartSum
                     this.cartCount = data.cartCount
+                } else if (data.error_type == 'not-logged') {
+                    window.location.href = "/connexion"
                 } else {
                     notyf.error("Chargement du panier à échouer !")
                 }
@@ -76,7 +80,7 @@ function app() {
 
 window.addEventListener('load', function() {
     let options = {
-        autoplay: 3000,
+        autoplay: 6000,
         perView: 4,
         hoverpause: true,
         gap: 20,

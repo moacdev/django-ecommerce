@@ -21,6 +21,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
 from django.core import serializers
 from account.models import Address, Cart
+from base.helpers import format_price, serializeCart
 from store.models import Categorie, Order, Product
 from store.views import categories, category, homepage, login, product, register
 from django.core.exceptions import PermissionDenied
@@ -28,30 +29,41 @@ from django.contrib.auth.decorators import login_required
 
 
 def accountInfo(request):
-    if request.user.is_authenticated != True:
+    if request.user.id is None:
         return redirect(to="/connexion")
     
     user = request.user
     address = Address.objects.filter(user=user).first()
 
     return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'user': request.user, 'address': address })
+
+def orderValidation(request):
+    if request.user.id is None:
+        return redirect(to="/connexion")
+    
+    user = request.user
+    address = Address.objects.filter(user=user).first()
+    cart = userCart = Cart.objects.filter(user=request.user, ordered=False)
+    cart, cartSum = serializeCart(userCart)
+    return render(request, "store/order-validation.html", { "categories": Categorie.objects.all(), 'user': request.user, 'address': address, 'cart': cart, 'cartSum': cartSum })
+
 def changePwd(request):
-    if request.user.is_authenticated != True:
+    if request.user.id is None:
         return redirect(to="/connexion")
     return render(request, "store/change-password.html", { "categories": Categorie.objects.all() })
 def wishList(request):
-    if request.user.is_authenticated != True:
+    if request.user.id is None:
         return redirect(to="/connexion")
     return render(request, "store/wishlist.html", { "categories": Categorie.objects.all() })
 
 def cart(request):
-    if request.user.is_authenticated != True:
+    if request.user.id is None:
         return redirect(to="/connexion")
     # Récupere le panier de utilisateur
     userCart = Cart.objects.filter(user=request.user, ordered=False).first()
     return render(request, "store/cart.html", { "categories": Categorie.objects.all(), 'cart': userCart })
 def orders(request):
-    if request.user.is_authenticated != True:
+    if request.user.id is None:
         return redirect(to="/connexion")
     return render(request, "store/orders.html", { "categories": Categorie.objects.all() })
 def search(request):
@@ -62,8 +74,11 @@ def helpFAQ(request):
 
 def apiChangePassword(request):
     # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
-    if request.method != 'POST' and request.user.is_authenticated != True:
+    if request.method != 'POST':
         raise PermissionDenied()
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
     # On récupere les donnée envoyée
     current_password = request.POST.get('password')
     new_password = request.POST.get('new_password')
@@ -83,8 +98,11 @@ def apiChangePassword(request):
 
 def apiChangeAddresses(request):
     # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
-    if request.method != 'POST' and request.user.is_authenticated != True:
+    if request.method != 'POST':
         raise PermissionDenied()
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
     # On récupere les donnée envoyée
     country = request.POST.get('country')
     city = request.POST.get('city')
@@ -103,9 +121,12 @@ def apiChangeAddresses(request):
 
 def apiChangeProfilInfo(request):
     # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
-    if request.method != 'POST' and request.user.is_authenticated != True:
+    if request.method != 'POST':
         raise PermissionDenied()
-
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
+    
     username = request.POST.get('username')
     email = request.POST.get('email')
     phone = request.POST.get('phone')
@@ -120,43 +141,37 @@ def apiChangeProfilInfo(request):
 
 def apiChangePaymentInfo(request):
     # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
-    if request.method != 'POST' and request.user.is_authenticated != True:
+    if request.method != 'POST':
         raise PermissionDenied()
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
     # On return à la vue une reponse comme quoi tous ses bien passée
     return JsonResponse({ "isOk": True })
 
 def apiGetCart(request):
      # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
-    if request.method != 'POST' and request.user.is_authenticated != True:
+    if request.method != 'POST':
         raise PermissionDenied()
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
+    print(request.user.id == None)
     # Récupere le panier de utilisateur
-    userCart = Cart.objects.select_related().filter(user=request.user, ordered=False)
-    cart = []
-    cartSum = 0
-    for _cart in userCart:
-        userID = _cart.user.id
-        cartSum += _cart.product.price
-        _product = {
-            'label': _cart.product.label,
-            'slug': _cart.product.label,
-            'stock': _cart.product.stock,
-            'price': _cart.product.price,
-            'image1': _cart.product.image1.url,
-        }
-        data = {
-            'userID': userID,
-            'product': _product,
-            'quantity': _cart.quantity
-        }
-        cart.append(data)
+    userCart = Cart.objects.filter(user=request.user, ordered=False)
+    cart, cartSum = serializeCart(userCart)
+    
     cartCount = Cart.objects.filter(user=request.user, ordered=False).count()
     # On return la reponse a la vue
-    return JsonResponse({ "isOk": True, 'cart': cart[:4], 'cartCount':cartCount, 'cartSum': cartSum  })
+    return JsonResponse({ "isOk": True, 'cart': cart[:4], 'cartCount':cartCount, 'cartSum': format_price(str(cartSum))  })
 
 def apiAddToCart(request):
      # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
-    if request.method != 'POST' and request.user.is_authenticated != True:
+    if request.method != 'POST':
         raise PermissionDenied()
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
 
     productID = (json.loads(request.body))['productID']
     qty = 1
@@ -201,6 +216,8 @@ urlpatterns = [
     path('mes-commandes', orders),
     path('recherche/', search),
     path('faq/', helpFAQ),
+
+    path('validation-commande/', orderValidation),
 
     path('api/account/change-password', apiChangePassword),
     path('api/account/change-addresses-info', apiChangeAddresses),

@@ -57,14 +57,14 @@
                          repeatCount="indefinite" />
                 </rect>
             </svg>
-            <div class="invisible h-0 glide-new-products">
+            <div class="invisible h-0 glide-new-products relative">
                 <div data-glide-el="controls">
-                    <button data-glide-dir="<" type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
+                    <button data-glide-dir="<" type="button" class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-prev>
                         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
                             <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"></path></svg>
                         </span>
                     </button>
-                    <button data-glide-dir=">" type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
+                    <button data-glide-dir=">" type="button" class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-next>
                         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
                             <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path></svg>
                         </span>
@@ -92,7 +92,7 @@
 
                                 </p>
                                 <div class="flex items-end justify-between">
-                                    <p class="text-xl text-gray-800 font-poppins"><span class="font-mono text-gray-900">{{product.price}}</span> Fcfa</p>
+                                    <p class="text-lg font-poppins"><span class="font-mono text-gray-900 italic">{{product.price}}</span ><span class="text-gray-500"> fcfa</span></p>
                                     <button @click="addToCart({{product.id}})" class="text-center text-white bg-green-600 border border-green-600 rounded-b p-1 transition group">
                                 <svg class="group-hover:hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--carbon" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="10" cy="28" r="2" fill="currentColor"></circle><circle cx="24" cy="28" r="2" fill="currentColor"></circle><path fill="currentColor" d="M28 7H5.82L5 2.8A1 1 0 0 0 4 2H0v2h3.18L7 23.2a1 1 0 0 0 1 .8h18v-2H8.82L8 18h18a1 1 0 0 0 1-.78l2-9A1 1 0 0 0 28 7Zm-2.8 9H7.62l-1.4-7h20.53Z"></path></svg>
                                 <svg class="hidden group-hover:block h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--carbon" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="10" cy="28" r="2" fill="currentColor"></circle><circle cx="24" cy="28" r="2" fill="currentColor"></circle><path fill="currentColor" d="M4.98 2.804A1 1 0 0 0 4 2H0v2h3.18l3.84 19.196A1 1 0 0 0 8 24h18v-2H8.82l-.8-4H26a1 1 0 0 0 .976-.783L29.244 7h-2.047l-1.999 9H7.62Z"></path><path fill="currentColor" d="M18 6V2h-2v4h-4v2h4v4h2V8h4V6h-4z"></path></svg>
@@ -169,12 +169,12 @@
             </svg>
             <div class="invisible h-0 glide-most-sold">
                 <div data-glide-el="controls">
-                    <button data-glide-dir="<" type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
+                    <button data-glide-dir="<" type="button" class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-prev>
                         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
                             <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"></path></svg>
                         </span>
-                    </button>
-                    <button data-glide-dir=">" type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
+                                        </button>
+                    <button data-glide-dir=">" type="button" class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-next>
                         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
                             <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path></svg>
                         </span>
@@ -202,8 +202,9 @@
 
                                 </p>
                                 <div class="flex items-end justify-between">
-                                    <p class="text-xl text-gray-800 font-poppins"><span class="font-mono text-gray-900">{{product.price}}</span> Fcfa</p>
-                                    <button @click="addToCart({{product.id}})" class="text-center text-white bg-green-600 border border-green-600 rounded-b p-1 transition group">
+                                    <p class="text-lg font-poppins"><span class="font-mono text-gray-900 italic">{>class {product.price}}</span  cfa</span>="text-gray-500">f
+                                        <span</p>
+                                            <button @click="addToCart({{product.id}})" class="text-center text-white bg-green-600 border border-green-600 rounded-b p-1 transition group">
                                 <svg class="group-hover:hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--carbon" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="10" cy="28" r="2" fill="currentColor"></circle><circle cx="24" cy="28" r="2" fill="currentColor"></circle><path fill="currentColor" d="M28 7H5.82L5 2.8A1 1 0 0 0 4 2H0v2h3.18L7 23.2a1 1 0 0 0 1 .8h18v-2H8.82L8 18h18a1 1 0 0 0 1-.78l2-9A1 1 0 0 0 28 7Zm-2.8 9H7.62l-1.4-7h20.53Z"></path></svg>
                                 <svg class="hidden group-hover:block h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--carbon" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="10" cy="28" r="2" fill="currentColor"></circle><circle cx="24" cy="28" r="2" fill="currentColor"></circle><path fill="currentColor" d="M4.98 2.804A1 1 0 0 0 4 2H0v2h3.18l3.84 19.196A1 1 0 0 0 8 24h18v-2H8.82l-.8-4H26a1 1 0 0 0 .976-.783L29.244 7h-2.047l-1.999 9H7.62Z"></path><path fill="currentColor" d="M18 6V2h-2v4h-4v2h4v4h2V8h4V6h-4z"></path></svg>
                             </button>
@@ -279,12 +280,12 @@
             </svg>
             <div class="invisible h-0 glide-most-popular">
                 <div data-glide-el="controls">
-                    <button data-glide-dir="<" type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
+                    <button data-glide-dir="<" type="button" class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-prev>
                         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
                             <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"></path></svg>
                         </span>
-                    </button>
-                    <button data-glide-dir=">" type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
+                                                        </button>
+                    <button data-glide-dir=">" type="button" class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-next>
                         <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
                             <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path></svg>
                         </span>
@@ -312,8 +313,9 @@
 
                                 </p>
                                 <div class="flex items-end justify-between">
-                                    <p class="text-xl text-gray-800 font-poppins"><span class="font-mono text-gray-900">{{product.price}}</span> Fcfa</p>
-                                    <button @click="addToCart({{product.id}})" class="text-center text-white bg-green-600 border border-green-600 rounded-b p-1 transition group">
+                                    <p class="text-lg font-poppins"><span>ray-9 class="font-mono text- gcfa</span>00 italic">{{product.price}}</span class="text-gray-500">f
+                                        <span</p>
+                                            <button @click="addToCart({{product.id}})" class="text-center text-white bg-green-600 border border-green-600 rounded-b p-1 transition group">
                                 <svg class="group-hover:hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--carbon" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="10" cy="28" r="2" fill="currentColor"></circle><circle cx="24" cy="28" r="2" fill="currentColor"></circle><path fill="currentColor" d="M28 7H5.82L5 2.8A1 1 0 0 0 4 2H0v2h3.18L7 23.2a1 1 0 0 0 1 .8h18v-2H8.82L8 18h18a1 1 0 0 0 1-.78l2-9A1 1 0 0 0 28 7Zm-2.8 9H7.62l-1.4-7h20.53Z"></path></svg>
                                 <svg class="hidden group-hover:block h-6 w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--carbon" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="10" cy="28" r="2" fill="currentColor"></circle><circle cx="24" cy="28" r="2" fill="currentColor"></circle><path fill="currentColor" d="M4.98 2.804A1 1 0 0 0 4 2H0v2h3.18l3.84 19.196A1 1 0 0 0 8 24h18v-2H8.82l-.8-4H26a1 1 0 0 0 .976-.783L29.244 7h-2.047l-1.999 9H7.62Z"></path><path fill="currentColor" d="M18 6V2h-2v4h-4v2h4v4h2V8h4V6h-4z"></path></svg>
                             </button>
