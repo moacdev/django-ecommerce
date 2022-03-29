@@ -217,7 +217,7 @@ urlpatterns = [
     path('recherche/', search),
     path('faq/', helpFAQ),
 
-    path('validation-commande/', orderValidation),
+    path('commande-validation/', orderValidation),
 
     path('api/account/change-password', apiChangePassword),
     path('api/account/change-addresses-info', apiChangeAddresses),
