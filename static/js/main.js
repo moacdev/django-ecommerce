@@ -78,45 +78,59 @@ function app() {
 }
 
 
+
 window.addEventListener('load', function() {
-    let options = {
-        autoplay: 6000,
-        perView: 4,
-        hoverpause: true,
-        gap: 20,
-        type: "carousel",
-        breakpoints: {
-            1200: {
-                perView: 3
-            },
-            990: {
-                perView: 2
-            },
-            600: {
-                perView: 1
+
+    function getGlideOptions(slideItems = 4){ 
+        let perView = slideItems >= 4 ? 4 : slideItems
+        let perView1200 = slideItems >= 3 ? 3 : slideItems
+        let perView990 = slideItems >= 2 ? 2 : 1
+        const options = {
+            autoplay: 6000,
+            perView,
+            hoverpause: true,
+            gap: 20,
+            type: "carousel",
+            breakpoints: {
+                1200: {
+                    perView: perView1200
+                },
+                990: {
+                    perView: perView990
+                },
+                600: {
+                    perView: 1
+                }
             }
         }
+        return options;
     }
+    
     let new_products_el = document.querySelector('.glide-new-products')
+    let new_products_length = new_products_el.getAttribute('pr-count')
+    
     let new_product_loader = document.querySelector('#new-products-loader')
 
     let most_sold_products_el = document.querySelector('.glide-most-sold')
+    let most_sold_products_length = most_sold_products_el.getAttribute('pr-count')
     let most_sold_loader = document.querySelector('#most-sold-loader')
 
     let most_popular_products_el = document.querySelector('.glide-most-popular')
+    let most_popular_products_length = most_popular_products_el.getAttribute('pr-count')
     let most_popular_loader = document.querySelector('#most-popular-loader')
+    
 
-    let glide_new_products = new Glide(document.querySelector('.glide-new-products'), options).mount()
+    let glide_new_products = new Glide(document.querySelector('.glide-new-products'), getGlideOptions(new_products_length)).mount()
     new_product_loader.classList.add('hidden')
     new_products_el.classList.remove('h-0')
     new_products_el.classList.remove('invisible')
 
-    let glide_most_sold = new Glide(document.querySelector('.glide-most-sold'), options).mount()
+    let glide_most_sold = new Glide(document.querySelector('.glide-most-sold'), getGlideOptions(most_sold_products_length)).mount()
     most_sold_loader.classList.add('hidden')
     most_sold_products_el.classList.remove('h-0')
     most_sold_products_el.classList.remove('invisible')
 
-    let glide_most_popular = new Glide(document.querySelector('.glide-most-popular'), options).mount()
+    let glide_most_popular = new Glide(document.querySelector('.glide-most-popular'), getGlideOptions(most_popular_products_length)).mount()
     most_popular_loader.classList.add('hidden')
     most_popular_products_el.classList.remove('h-0')
     most_popular_products_el.classList.remove('invisible')
