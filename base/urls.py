@@ -31,11 +31,22 @@ from django.contrib.auth.decorators import login_required
 def accountInfo(request):
     if request.user.id is None:
         return redirect(to="/connexion")
-    
+    tabIndex = 0
+    if request.GET.get('tab'):
+        tab = request.GET.get('tab')
+        if tab == 'profil':
+            tabIndex = 0
+        elif tab == 'adresses':
+            tabIndex = 1
+        elif tab == 'paiement':
+            tabIndex = 2
+        elif tab == 'changer-mot-de-passe':
+            tabIndex = 3
+
     user = request.user
     address = Address.objects.filter(user=user).first()
 
-    return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'user': request.user, 'address': address })
+    return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'tabIndex': tabIndex, 'user': request.user, 'address': address })
 
 def orderValidation(request):
     if request.user.id is None:
