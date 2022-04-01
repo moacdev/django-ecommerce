@@ -8,6 +8,7 @@ Pré-requis:\
     python -m venv env
     source env/Scripts/activate
     pip install -r requirements.txt
+    python manage.py migrate
     python manage.py runserver
     python manage.py tailwind start // pour lancer le compilatur tailwind
 Aller sur http://127.0.0.1:8000/

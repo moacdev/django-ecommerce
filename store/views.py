@@ -73,7 +73,37 @@ def products(request):
     else:
         products = Product.objects.all()
         productCount = products.count()
-    return render(request, "store/products.html", { 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products) })
+
+    currentPage = 1
+    if request.GET.get('page'):
+        currentPage = int(request.GET.get('page'))
+    
+    productPerPage = 25
+    pages = math.floor(productCount / productPerPage)
+    
+    pageOffset = 2
+    currentPagePrvOffset = int(math.fabs(currentPage - pageOffset ))
+    lastPagePrvOffset = int(math.fabs(pages - pageOffset ))
+    pageOffsetBtw = pageOffset * 2
+
+    
+
+    pagination = {
+        'pages' : pages,
+        'productPerPage' : productPerPage,
+        'currentPage': currentPage,
+        'pageOffset': pageOffset,
+        'pageOffsetBtw': pageOffsetBtw,
+        'currentPagePrvOffset': currentPagePrvOffset,
+        'lastPagePrvOffset': lastPagePrvOffset,
+        'currentPagePrvOffsetToPageOffset': range(currentPagePrvOffset, pageOffset),
+        'lastPagePrvOffsetToPageCount': range(lastPagePrvOffset, pages),
+        'currentPagePrvOffsetToPagesCount': range(currentPagePrvOffset, pages),
+    }
+
+    print(pagination)
+
+    return render(request, "store/products.html", {'pagination': pagination, 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products) })
 
 def category(request, category):
     _category = get_object_or_404(Categorie, slug=category)
