@@ -26,6 +26,7 @@ from store.models import Categorie, Order, Product
 from store.views import categories, category, homepage, login, product, products, register
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+from django.conf.urls import (handler400, handler403, handler404, handler500)
 
 
 def accountInfo(request):
@@ -293,3 +294,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 ]
+
+handler404 = 'store.views.handler404'
+handler403 = 'store.views.handler403'
+handler500 = 'store.views.handler500'

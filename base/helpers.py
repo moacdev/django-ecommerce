@@ -27,6 +27,8 @@ def serializeCart(userCart):
             'label': _cart.product.label,
             'slug': _cart.product.label,
             'stock': _cart.product.stock,
+            'category_slug': _cart.product.category.slug,
+            'category': _cart.product.category,
             'price': format_price(str(_cart.product.price)),
             'image1': _cart.product.image1.url,
         }
@@ -49,6 +51,8 @@ def serializeWishList(userWishes):
             'label': _wish.label,
             'slug': _wish.label,
             'stock': _wish.stock,
+            'category_slug': _wish.product.category.slug,
+            'category': _wish.product.category,
             'price': format_price(str(_wish.price)),
             'image1': _wish.image1.url,
         }
@@ -66,6 +70,8 @@ def serializeProducts(_products):
             'label': product.label,
             'slug': product.label,
             'stock': product.stock,
+            'category_slug': product.category.slug,
+            'category': product.category,
             'price': format_price(str(product.price)),
             'image1': product.image1.url,
         }

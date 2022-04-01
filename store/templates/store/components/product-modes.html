@@ -1,4 +1,4 @@
-<div :class=" { 'w-48 h-64 flex-col' : productDisplayMode == 'grid', 'w-full h-36 flex-row' : productDisplayMode == 'list',  } " class="flex  rounded bg-white hover:shadow-lg border border-gray-400 p-1 hover:-translate-y-1 transition overflow-hidden mx-auto ">
+<div class="flex w-48 h-64 flex-col rounded bg-white hover:shadow-lg border border-gray-400 p-1 hover:-translate-y-1 transition overflow-hidden ">
     <!-- product image -->
     <a href="/categories/{{product.category.slug}}/{{product.slug}}" class="relative group">
         <img src="{{product.image1}}" class="w-full h-32 p-2 object-contain">

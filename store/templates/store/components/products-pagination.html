@@ -1,11 +1,12 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
-<div class="px-4 py-3 flex items-center justify-between sm:px-6">
+{% load mathfilters %}
+<div class="px-4 py-3 flex items-center justify-between sm:px-6 bg-white border rounded shadow">
     <div class="flex-1 flex justify-between sm:hidden">
-      <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> Previous </a>
-      <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> Next </a>
+      <a href="?page={{pagination.currentPage|sub:1}}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> Previous </a>
+      <a href="?page={{pagination.currentPage|add:1}}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> Next </a>
     </div>
         <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <a href="?page={{pagination.currentPage|sub:1}}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
             <span class="sr-only">Previous</span>
             <!-- Heroicon name: solid/chevron-left -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -16,26 +17,26 @@
           {% if pagination.pages > pagination.pageOffsetBtw %}
             {% for pageIndex in pagination.currentPagePrvOffsetToPageOffset %}
               {% if pagination.currentPage == pageIndex %}
-              <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
+              <a href="?page={{pageIndex}}" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
               {% else %}
-              <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
+              <a href="?page={{pageIndex}}" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
               {% endif %}
             {% endfor %}
             <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"> ... </span>
             {% for lastPageIndex in pagination.lastPagePrvOffsetToPageCount %}
-            <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> {{lastPageIndex}} </a>
+            <a href="?page={{pageIndex}}" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> {{lastPageIndex}} </a>
             {% endfor %}
           
           {% else %}
           {% for pageIndex in pagination.currentPagePrvOffsetToPagesCount %}
               {% if pagination.currentPage == pageIndex %}
-              <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
+              <a href="?page={{pageIndex}}" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
               {% else %}
-              <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
+              <a href="?page={{pageIndex}}" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"> {{pageIndex}} </a>
               {% endif %}
             {% endfor %}
           {% endif %}
-          <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <a href="?page={{pagination.currentPage|add:1}}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
             <span class="sr-only">Next</span>
             <!-- Heroicon name: solid/chevron-right -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -46,11 +47,11 @@
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
               <p class="text-sm text-gray-700 ml-2">
-                <span class="font-medium">1</span>
+                <span class="font-medium">{{pagination.currentPage}}</span>
                 /
-                <span class="font-medium">10</span>
+                <span class="font-medium">{{pagination.pages}}</span>
                 sur
-                <span class="font-medium">{{products|length}}</span>
+                <span class="font-medium">{{productCount}}</span>
                 produits
               </p>
             </div>

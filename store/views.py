@@ -3,6 +3,7 @@ from django.forms import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import logout
+from django.template import RequestContext
 from account.models import Shopper
 from base.helpers import format_price, serializeProducts
 from store.models import Categorie, Product
@@ -78,13 +79,20 @@ def products(request):
     if request.GET.get('page'):
         currentPage = int(request.GET.get('page'))
     
-    productPerPage = 25
-    pages = math.floor(productCount / productPerPage)
+    productPerPage = 3
+    pages = math.ceil(productCount / productPerPage)
+
     
     pageOffset = 2
     currentPagePrvOffset = int(math.fabs(currentPage - pageOffset ))
+    if currentPagePrvOffset < 1:
+        currentPagePrvOffset = 1
     lastPagePrvOffset = int(math.fabs(pages - pageOffset ))
+    if currentPagePrvOffset > pages:
+        currentPagePrvOffset = pages
     pageOffsetBtw = pageOffset * 2
+
+    take_from = productPerPage * (currentPage-1)
 
     
 
@@ -96,14 +104,15 @@ def products(request):
         'pageOffsetBtw': pageOffsetBtw,
         'currentPagePrvOffset': currentPagePrvOffset,
         'lastPagePrvOffset': lastPagePrvOffset,
-        'currentPagePrvOffsetToPageOffset': range(currentPagePrvOffset, pageOffset),
-        'lastPagePrvOffsetToPageCount': range(lastPagePrvOffset, pages),
-        'currentPagePrvOffsetToPagesCount': range(currentPagePrvOffset, pages),
+        'currentPagePrvOffsetToPageOffset': list(range(currentPagePrvOffset, pageOffset+1)),
+        'lastPagePrvOffsetToPageCount': list(range(lastPagePrvOffset, pages+1)),
+        'currentPagePrvOffsetToPagesCount': list(range(currentPagePrvOffset, pages+1)),
     }
 
-    print(pagination)
+    print(pagination['currentPagePrvOffsetToPagesCount'])
 
-    return render(request, "store/products.html", {'pagination': pagination, 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products) })
+
+    return render(request, "store/products.html", {'pagination': pagination, 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products)[take_from:take_from+productPerPage] })
 
 def category(request, category):
     _category = get_object_or_404(Categorie, slug=category)
@@ -113,3 +122,19 @@ def product(request, category, product):
     _category = get_object_or_404(Categorie, slug=category)
     _product = get_object_or_404(Product, slug=product, category=_category.id)
     return render(request, "store/view_product.html", { "categories": Categorie.objects.all(), "category": _category, "product": _product })
+
+
+def handler404(request, exception):
+    response = render("404.html")
+    response.status_code = 404
+    return response
+
+def handler403(request, exception):
+    response = render("403.html")
+    response.status_code = 403
+    return response
+
+def handler500(request):
+    response = render("500.html")
+    response.status_code = 500
+    return response

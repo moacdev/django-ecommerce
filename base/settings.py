@@ -38,6 +38,7 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 INSTALLED_APPS = [
     'jazzmin',
     'tailwind',
+    'mathfilters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
