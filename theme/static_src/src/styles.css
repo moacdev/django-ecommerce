@@ -4,3 +4,6 @@
 *[x-cloak] {
     display: none !important;
 }
+*, *:focus, *:hover, *:focus-within{
+    outline: none !important;
+}

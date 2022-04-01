@@ -1,8 +1,11 @@
 function app() {
-
+    
     return {
         sideCart: false,
         cartLoading: true,
+        productDisplayMode: 'list', // list or grid
+        prodAddedToCartOverlay: false,
+        prodAddedToFavOverlay: false,
         cart: [],
         cartSum: 0,
         cartCount: 0,
@@ -11,25 +14,72 @@ function app() {
                 this.fetchCart();
                 this.sideCart = true;
             } else {
-                this.sideCart = false;
+                this.sideCart = false
             }
         },
+        addToFav(productID){
+            const notyf = new window.Notyf()
+                // loading
+
+            const csrftoken = document.querySelector("div#csrf input[name='csrfmiddlewaretoken']").getAttribute("value")
+            axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
+            axios.post('/api/add-to-fav', { productID }).then(({
+                data
+            }) => {
+                if (data.isOk) {
+                    this.prodAddedToFavOverlay = true
+                } else if (data.error_type == 'product-in-fav') {
+                    notyf.error("Ce produit est déjà dans votre panier !")
+                } else if (data.error_type == 'product-not-exist') {
+                    notyf.error("Ce produit n'est plus disponble !")
+                } else if (data.error_type == 'not-logged') {
+                    window.location.href = "/connexion"
+                } else {
+                    notyf.error("Produit non ajouté aux favoris !")
+                }
+            }).catch(err => {
+                console.log(err);
+                notyf.error("Une erreur s'est produite durant l'ajout aux favoris.")
+            }).finally(() => {
+                // loading off
+            })
+        },
+        OrderCart(){
+            const csrftoken = document.querySelector("div#csrf input[name='csrfmiddlewaretoken']").getAttribute("value")
+            axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
+            axios.post('/api/order-cart' ).then(({
+                data
+            }) => {
+                if (data.isOk) {
+                    this.prodAddedToCartOverlay = true
+                } else if (data.error_type == 'product-in-cart') {
+                    notyf.error("Ce produit est déjà dans votre panier !")
+                } else if (data.error_type == 'product-not-exist') {
+                    notyf.error("Ce produit n'est plus disponble !")
+                } else if (data.error_type == 'not-logged') {
+                    window.location.href = "/connexion"
+                } else {
+                    notyf.error("Produit non ajouté au panier !")
+                }
+            }).catch(err => {
+                console.log(err);
+                notyf.error("Une erreur s'est produite durant l'ajout au panier.")
+            }).finally(() => {
+                // loading off
+            })
+        },
+
         addToCart(productID) {
             const notyf = new window.Notyf()
                 // loading
 
             const csrftoken = document.querySelector("div#csrf input[name='csrfmiddlewaretoken']").getAttribute("value")
             axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
             axios.post('/api/add-to-cart', { productID }).then(({
                 data
             }) => {
                 if (data.isOk) {
-                    console.log("added");
+                    this.prodAddedToCartOverlay = true
                 } else if (data.error_type == 'product-in-cart') {
                     notyf.error("Ce produit est déjà dans votre panier !")
                 } else if (data.error_type == 'product-not-exist') {

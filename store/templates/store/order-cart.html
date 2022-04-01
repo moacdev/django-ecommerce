@@ -1,0 +1,77 @@
+{% extends 'store/layout/base.html' %} {% load static %} {% block titre %} Validation de la commande {% endblock titre %} {% block content %}
+
+<div class="p-4 container max-w-7xl mx-auto ">
+    <div class="flex flex-col xl:flex-row jusitfy-center items-start w-full gap-3">
+        <div class="flex flex-col justify-start items-start bg-gray-50 rounded border shadow px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
+            <p class="text-xl font-semibold text-gray-800">Votre panier <span class="italic text-gray-500 text-sm">({{cart|length}})</span></p>
+            {% for the_cart in cart %}
+            <div class="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
+                <div class="pb-4 md:pb-8 w-full md:w-40">
+                    <img class="w-full" src="{{the_cart.product.image1}}" alt="dress" />
+                </div>
+                <div class="border-b border-gray-400 md:flex-row flex-col flex justify-between items-start w-full pb-8 space-y-4 md:space-y-0">
+                    <div class="w-full flex flex-col justify-start items-start space-y-8">
+                        <h3 class="text-xl xl:text-2xl font-semibold text-gray-800">{{the_cart.product.label}}</h3>
+                    
+                        <p class="text-base xl:text-lg font-semibold text-gray-800">{{the_cart.product.price}} fcfa</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="flex flex-col w-full xl:max-w-xs gap-3">
+            <div class="flex flex-col p-4 bg-gray-50 rounded border shadow w-full gap-3">
+                <h3 class="text-xl font-semibold leading-5 text-gray-800">Résumé</h3>
+                <div class="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
+                    <div class="flex justify-between w-full">
+                        <p class="text-base leading-4 text-gray-800">Total des produits</p>
+                        <p class="text-base leading-4 text-gray-600">{{cartSum}}</p>
+                    </div>
+                    <div class="flex justify-between items-center w-full">
+                        <p class="text-base leading-4 text-gray-800">Livraison</p>
+                        <p class="text-base leading-4 text-gray-600">Gratuit</p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center w-full">
+                    <p class="text-base font-semibold leading-4 text-gray-800">Total</p>
+                    <p class="text-base font-semibold leading-4 text-gray-600">{{ cartSum }} fcfa</p>
+                </div>
+                <button @click="OrderCart()" class="px-4 py-1 my-2 text-white flex gap-2 rounded mx-auto bg-blue-600 hover:bg-blue-800 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-6 w-6 fill-current" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path fill="currentColor" d="M4 7a1 1 0 0 0 0 2h2.22l2.624 10.5c.223.89 1.02 1.5 1.937 1.5h12.47c.903 0 1.67-.6 1.907-1.47L27.75 10h-2.094l-2.406 9H10.78L8.157 8.5A1.984 1.984 0 0 0 6.22 7H4zm18 14c-1.645 0-3 1.355-3 3s1.355 3 3 3s3-1.355 3-3s-1.355-3-3-3zm-9 0c-1.645 0-3 1.355-3 3s1.355 3 3 3s3-1.355 3-3s-1.355-3-3-3zm3-14v5h-3l4 4l4-4h-3V7h-2zm-3 16c.564 0 1 .436 1 1c0 .564-.436 1-1 1c-.564 0-1-.436-1-1c0-.564.436-1 1-1zm9 0c.564 0 1 .436 1 1c0 .564-.436 1-1 1c-.564 0-1-.436-1-1c0-.564.436-1 1-1z"></path></svg>
+                    <span>Valider la commande</span>
+                </button>
+            </div>
+            <div class="flex items-center justify-start bg-gray-50 p-2 shadow rounded border" >
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-10 w-10 mr-auto fill-current text-green-700" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M22 3H2C.9 3 0 3.9 0 5v14c0 1.1.9 2 2 2h20c1.1 0 1.99-.9 1.99-2L24 5c0-1.1-.9-2-2-2zM8 6c1.66 0 3 1.34 3 3s-1.34 3-3 3s-3-1.34-3-3s1.34-3 3-3zm6 12H2v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1zm3.85-4h1.39c.16 0 .3.07.4.2l1.1 1.45c.15.2.13.48-.05.65l-1.36 1.36c-.18.18-.48.2-.67.04a7.557 7.557 0 0 1-2.38-3.71a7.248 7.248 0 0 1 0-3.99a7.513 7.513 0 0 1 2.38-3.71c.2-.17.49-.14.67.04l1.36 1.36c.18.18.2.46.05.65l-1.1 1.45a.48.48 0 0 1-.4.2h-1.39c-.22.63-.35 1.3-.35 2s.13 1.38.35 2.01z"></path></svg>
+                
+                {% if user.phone %}
+                <p class="text-sm text-gray-700 p-2">Mon numéro : {{ user.phone }}</p>
+                {% else %}
+                <span class="text-red-600 py-1 px-2 text-center">Veuillez ajoutez votre numéro</span>
+                {% endif %}
+                <a href="/mon-compte?tab=profil" class="px-4 py-1 text-neutral-900 hover:text-white rounded bg-white border border-neutral-700 hover:bg-neutral-700 transition my-1 ml-auto"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-4 w-4" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m16.757 3l-2 2H5v14h14V9.243l2-2V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12.757zm3.728-.9L21.9 3.516l-9.192 9.192l-1.412.003l-.002-1.417L20.485 2.1z"></path></svg></a>
+            </div>
+            <div class="flex items-center justify-start bg-gray-50 p-2 shadow rounded border">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-10 w-10 mr-auto fill-current text-blue-700" width="36" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 576 512"><path fill="currentColor" d="M512 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h448c35.35 0 64-28.65 64-64V96c0-35.35-28.7-64-64-64zm-336 96c35.35 0 64 28.65 64 64s-28.65 64-64 64s-64-28.65-64-64s28.7-64 64-64zm96 256H80c-8.84 0-16-7.2-16-16c0-44.2 35.82-80 80-80h64c44.18 0 80 35.82 80 80c0 8.8-7.2 16-16 16zm224-64H368c-8.8 0-16-7.2-16-16s7.2-16 16-16h128c8.8 0 16 7.2 16 16s-7.2 16-16 16zm0-64H368c-8.8 0-16-7.2-16-16s7.2-16 16-16h128c8.8 0 16 7.2 16 16s-7.2 16-16 16zm0-64H368c-8.8 0-16-7.2-16-16s7.2-16 16-16h128c8.8 0 16 7.2 16 16s-7.2 16-16 16z"></path></svg>
+                {% if address %}
+                <p class="text-sm text-gray-700 p-2">{{address.street_door}} {{address.quarter}} {{address.city}} {{address.country}}</p>
+                {% else %}
+                <span class="text-red-600 py-1 px-2 text-center">Veuillez configurer vos adresses</span>
+                {% endif %}
+                <a href="/mon-compte?tab=adresses" class="px-4 py-1 text-neutral-900 hover:text-white rounded bg-white border border-neutral-700 hover:bg-neutral-700 transition my-1 mr-auto"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-4 w-4" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m16.757 3l-2 2H5v14h14V9.243l2-2V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12.757zm3.728-.9L21.9 3.516l-9.192 9.192l-1.412.003l-.002-1.417L20.485 2.1z"></path></svg></a>
+            </div>
+            <div class="flex items-center bg-gray-50 p-2 shadow rounded border">
+                    <svg class="h-10 w-10 mr-auto fill-current text-orange-600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ph" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path fill="currentColor" d="M224 52H32a12 12 0 0 0-12 12v128a12 12 0 0 0 12 12h192a12 12 0 0 0 12-12V64a12 12 0 0 0-12-12ZM32 60h192a4 4 0 0 1 4 4v28.9H28V64a4 4 0 0 1 4-4Zm192 136H32a4 4 0 0 1-4-4v-91.1h200V192a4 4 0 0 1-4 4Zm-20-28a4 4 0 0 1-4 4h-32a4 4 0 0 1 0-8h32a4 4 0 0 1 4 4Zm-64 0a4 4 0 0 1-4 4h-16a4 4 0 0 1 0-8h16a4 4 0 0 1 4 4Z"></path></svg>
+                {% if payment %}
+                <p class="text-sm text-gray-700 p-2">Cash à la livraison</p>
+                {% else %}
+                <span class="text-red-600 py-1 px-2 text-center">Veuillez configurer un moyen de paiement</span>
+                {% endif %}
+                <a href="/mon-compte?tab=paiement" class="px-4 py-1 text-neutral-900 hover:text-white rounded bg-white border border-neutral-700 hover:bg-neutral-700 transition my-1 ml-auto"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-4 w-4" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m16.757 3l-2 2H5v14h14V9.243l2-2V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12.757zm3.728-.9L21.9 3.516l-9.192 9.192l-1.412.003l-.002-1.417L20.485 2.1z"></path></svg></a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock content %}

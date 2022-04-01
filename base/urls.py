@@ -20,10 +20,10 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
 from django.core import serializers
-from account.models import Address, Cart
-from base.helpers import format_price, serializeCart
+from account.models import Address, Cart, WishList
+from base.helpers import format_price, serializeCart, serializeWishList
 from store.models import Categorie, Order, Product
-from store.views import categories, category, homepage, login, product, register
+from store.views import categories, category, homepage, login, product, products, register
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 
@@ -48,15 +48,19 @@ def accountInfo(request):
 
     return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'tabIndex': tabIndex, 'user': request.user, 'address': address })
 
-def orderValidation(request):
+def orderCart(request):
     if request.user.id is None:
         return redirect(to="/connexion")
     
     user = request.user
     address = Address.objects.filter(user=user).first()
+
+    payment_method = None
+
     cart = userCart = Cart.objects.filter(user=request.user, ordered=False)
     cart, cartSum = serializeCart(userCart)
-    return render(request, "store/order-validation.html", { "categories": Categorie.objects.all(), 'user': request.user, 'address': address, 'cart': cart, 'cartSum': cartSum })
+
+    return render(request, "store/order-cart.html", { "categories": Categorie.objects.all(), 'user': request.user, 'payment': 's' , 'address': address,'payment_method': payment_method, 'cart': cart, 'cartSum': cartSum })
 
 def changePwd(request):
     if request.user.id is None:
@@ -65,7 +69,8 @@ def changePwd(request):
 def wishList(request):
     if request.user.id is None:
         return redirect(to="/connexion")
-    return render(request, "store/wishlist.html", { "categories": Categorie.objects.all() })
+    wishList = WishList.objects.filter(user=request.user).first()
+    return render(request, "store/wishlist.html", {'wishList': serializeWishList(wishList), "categories": Categorie.objects.all() })
 
 def cart(request):
     if request.user.id is None:
@@ -73,14 +78,20 @@ def cart(request):
     # Récupere le panier de utilisateur
     userCart = Cart.objects.filter(user=request.user, ordered=False).first()
     return render(request, "store/cart.html", { "categories": Categorie.objects.all(), 'cart': userCart })
+
 def orders(request):
     if request.user.id is None:
         return redirect(to="/connexion")
     return render(request, "store/orders.html", { "categories": Categorie.objects.all() })
+
 def search(request):
     return render(request, "store/search.html", { "categories": Categorie.objects.all() })
-def helpFAQ(request):
-    return render(request, "store/faq.html", { "categories": Categorie.objects.all() })
+
+def storeInfo(request):
+    # latitude = '12.659584'
+    # longitude = '-7.966160'
+    # key = 'AIzaSyC7z8j8wQVsk5Q-0fL-kt3bAeV1tJkuynE'
+    return render(request, "store/my-store.html", {"categories": Categorie.objects.all()})
 
 
 def apiChangePassword(request):
@@ -174,7 +185,7 @@ def apiGetCart(request):
     
     cartCount = Cart.objects.filter(user=request.user, ordered=False).count()
     # On return la reponse a la vue
-    return JsonResponse({ "isOk": True, 'cart': cart[:4], 'cartCount':cartCount, 'cartSum': format_price(str(cartSum))  })
+    return JsonResponse({ "isOk": True, 'cart': cart, 'cartCount':cartCount, 'cartSum': format_price(str(cartSum))  })
 
 def apiAddToCart(request):
      # On accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
@@ -211,24 +222,64 @@ def apiAddToCart(request):
     # On return la reponse a la vue
     return JsonResponse({ "isOk": True, 'cartCount': cartCount  })
 
+# fonction api permettant d'ajouter un favoris/souhait
+def apiAddToFav(request):
+
+     # On n'accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
+    if request.method != 'POST':
+        raise PermissionDenied()
+
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
+
+
+    productID = (json.loads(request.body))['productID']
+
+    if productID is None:
+        return JsonResponse({ "isOk": False })
+
+    user = request.user
+
+    # Recuperation du produit
+    product = Product.objects.filter(pk=productID).first()
+    if product is None:
+        return JsonResponse({ "isOk": False, 'error_type': "product-not-exist" })
+
+    # Verifie si l'utilisateur n'a pas déjà le produit dans ses favoris
+    userWishList = WishList.objects.filter(user=user).first()
+    if userWishList:
+
+        if userWishList.product.filter(id=productID):
+            return JsonResponse({ "isOk": False, 'error_type': "product-in-fav" })
+        userWishList.product.add(product)
+    else:
+        # on le cree
+        userWishList = WishList.objects.create(user=user)
+        userWishList.product.add(product)
+    
+    
+    # On return la reponse a la vue
+    return JsonResponse({ "isOk": True, 'wishCount': userWishList.product.count()  })
+
 
 urlpatterns = [
     path('', homepage),
     path('connexion/', login),
     path('inscription/', register),
     path('categories/', categories),
+    path('produits/', products),
     path('categories/<str:category>', category),
     path('categories/<str:category>/<str:product>', product),
 
 
     path('mon-compte/', accountInfo),
-    path('liste-de-souhaits', wishList),
-    path('mon-panier', cart),
+    path('liste-de-souhait', wishList),
     path('mes-commandes', orders),
     path('recherche/', search),
-    path('faq/', helpFAQ),
+    path('boutique/', storeInfo),
 
-    path('commande-validation/', orderValidation),
+    path('commander-mon-panier/', orderCart),
 
     path('api/account/change-password', apiChangePassword),
     path('api/account/change-addresses-info', apiChangeAddresses),
@@ -236,6 +287,7 @@ urlpatterns = [
     path('api/account/change-payment-info', apiChangePaymentInfo),
     path('api/get-cart', apiGetCart),
     path('api/add-to-cart', apiAddToCart),
+    path('api/add-to-fav', apiAddToFav),
 
 
 

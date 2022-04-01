@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import logout
 from account.models import Shopper
-from base.helpers import format_price
+from base.helpers import format_price, serializeProducts
 from store.models import Categorie, Product
 from django.core.validators import validate_email
 from django.contrib.auth import authenticate
@@ -61,15 +61,25 @@ def logout_view(request):
     logout(request)
 
 def categories(request):
+    
     categories = Categorie.objects.all()
     return render(request, "store/categories.html", { "categories": Categorie.objects.all() })
+
+def products(request):
+    categories = Categorie.objects.all()
+    if  request.GET.get('categorie'):
+        category = get_object_or_404(Categorie, slug=request.GET.get('categorie'))
+        products = Product.objects.filter(category=category)
+    else:
+        products = Product.objects.all()
+        productCount = products.count()
+    return render(request, "store/products.html", { 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products) })
 
 def category(request, category):
     _category = get_object_or_404(Categorie, slug=category)
     return render(request, "store/category.html", { "categories": Categorie.objects.all(), "category": _category, "products": Product.objects.filter(category=_category.id) })
 
 def product(request, category, product):
-    print(category)
     _category = get_object_or_404(Categorie, slug=category)
     _product = get_object_or_404(Product, slug=product, category=_category.id)
     return render(request, "store/view_product.html", { "categories": Categorie.objects.all(), "category": _category, "product": _product })

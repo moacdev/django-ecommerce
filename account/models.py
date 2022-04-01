@@ -31,3 +31,9 @@ class Cart(Model):
     ordered_date = DateField(blank=True, null=True)
     def __str__(self):
         return f"{self.product} au panier de {self.user}"
+
+class WishList(Model):
+    user = ForeignKey(AUTH_USER_MODEL, on_delete=CASCADE)
+    product = ManyToManyField('store.Product')
+    def __str__(self):
+        return f"{self.product} favoris de {self.user}"
