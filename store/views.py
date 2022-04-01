@@ -71,6 +71,7 @@ def products(request):
     if  request.GET.get('categorie'):
         category = get_object_or_404(Categorie, slug=request.GET.get('categorie'))
         products = Product.objects.filter(category=category)
+        productCount = products.count()
     else:
         products = Product.objects.all()
         productCount = products.count()
@@ -79,37 +80,22 @@ def products(request):
     if request.GET.get('page'):
         currentPage = int(request.GET.get('page'))
     
-    productPerPage = 3
-    pages = math.ceil(productCount / productPerPage)
+    productPerPage = 5
+    corners = 1
+    totalPages = math.ceil(productCount / productPerPage)
 
     
-    pageOffset = 2
-    currentPagePrvOffset = int(math.fabs(currentPage - pageOffset ))
-    if currentPagePrvOffset < 1:
-        currentPagePrvOffset = 1
-    lastPagePrvOffset = int(math.fabs(pages - pageOffset ))
-    if currentPagePrvOffset > pages:
-        currentPagePrvOffset = pages
-    pageOffsetBtw = pageOffset * 2
-
     take_from = productPerPage * (currentPage-1)
 
     
 
     pagination = {
-        'pages' : pages,
+        'totalPages' : list(range(1,totalPages+1)),
         'productPerPage' : productPerPage,
         'currentPage': currentPage,
-        'pageOffset': pageOffset,
-        'pageOffsetBtw': pageOffsetBtw,
-        'currentPagePrvOffset': currentPagePrvOffset,
-        'lastPagePrvOffset': lastPagePrvOffset,
-        'currentPagePrvOffsetToPageOffset': list(range(currentPagePrvOffset, pageOffset+1)),
-        'lastPagePrvOffsetToPageCount': list(range(lastPagePrvOffset, pages+1)),
-        'currentPagePrvOffsetToPagesCount': list(range(currentPagePrvOffset, pages+1)),
+        'corners': list(range(1,corners+1))
     }
 
-    print(pagination['currentPagePrvOffsetToPagesCount'])
 
 
     return render(request, "store/products.html", {'pagination': pagination, 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products)[take_from:take_from+productPerPage] })
