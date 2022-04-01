@@ -80,7 +80,7 @@ def products(request):
     if request.GET.get('page'):
         currentPage = int(request.GET.get('page'))
     
-    productPerPage = 5
+    productPerPage = 25
     corners = 1
     totalPages = math.ceil(productCount / productPerPage)
 
@@ -100,9 +100,34 @@ def products(request):
 
     return render(request, "store/products.html", {'pagination': pagination, 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products)[take_from:take_from+productPerPage] })
 
-def category(request, category):
+def categoryProducts(request, category):
+    categories = Categorie.objects.all()
+    
     _category = get_object_or_404(Categorie, slug=category)
-    return render(request, "store/category.html", { "categories": Categorie.objects.all(), "category": _category, "products": Product.objects.filter(category=_category.id) })
+    products = Product.objects.filter(category=_category)
+    productCount = products.count()
+
+    currentPage = 1
+    if request.GET.get('page'):
+        currentPage = int(request.GET.get('page'))
+    
+    productPerPage = 25
+    corners = 1
+    totalPages = math.ceil(productCount / productPerPage)
+
+    
+    take_from = productPerPage * (currentPage-1)
+
+    
+
+    pagination = {
+        'totalPages' : list(range(1,totalPages+1)),
+        'productPerPage' : productPerPage,
+        'currentPage': currentPage,
+        'corners': list(range(1,corners+1))
+    }
+
+    return render(request, "store/category-products.html", {'pagination': pagination, 'productCount': productCount, "categories": Categorie.objects.all(), 'products': serializeProducts(products)[take_from:take_from+productPerPage] })
 
 def product(request, category, product):
     _category = get_object_or_404(Categorie, slug=category)

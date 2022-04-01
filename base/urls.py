@@ -23,7 +23,7 @@ from django.core import serializers
 from account.models import Address, Cart, WishList
 from base.helpers import format_price, serializeCart, serializeWishList
 from store.models import Categorie, Order, Product
-from store.views import categories, category, homepage, login, product, products, register
+from store.views import categories, categoryProducts, homepage, login, product, products, register
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import (handler400, handler403, handler404, handler500)
@@ -270,7 +270,7 @@ urlpatterns = [
     path('inscription/', register),
     path('categories/', categories),
     path('produits/', products),
-    path('categories/<str:category>', category),
+    path('categories/<str:category>', categoryProducts),
     path('categories/<str:category>/<str:product>', product),
 
 
