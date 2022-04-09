@@ -134,6 +134,8 @@ def categoryProducts(request, category):
 def product(request, category, product):
     _category = get_object_or_404(Categorie, slug=category)
     _product = get_object_or_404(Product, slug=product, category=_category.id)
+    _product.view_count += 1
+    _product.save()
     return render(request, "store/view_product.html", { "categories": Categorie.objects.all(), "category": _category, "product": _product })
 
 

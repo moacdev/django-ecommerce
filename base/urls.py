@@ -315,6 +315,8 @@ def ApiOrderCart(request):
 
     for cart in userActivesCart:
         cart.ordered = True
+        cart_product = Product.objects.filter(pk=cart.product.id).first()
+        cart_product.sold_count += 1
         cart.ordered_date = Date.today()
         cart.save()
         applyCartOrdered.cart.add(cart)
