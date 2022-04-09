@@ -87,7 +87,7 @@
     </div>
     {% endif %}
 
-    {% if products|length > 0 %}
+    {% if most_sold|length > 0 %}
     <!-- products -->
     <div class="w-full mt-8 bg-neutral-200" style="height: 460px;">
 
@@ -160,7 +160,7 @@
                 </div>
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
-                        {% for product in products %}
+                        {% for product in most_sold %}
                         <li class="glide__slide">
                             <!-- single product -->
                             {% include 'store/components/product.html' %}
@@ -176,7 +176,7 @@
     </div>
     {% endif %}
 
-    {% if products|length > 0 %}
+    {% if most_viewed|length > 0 %}
     <div class="w-full" style="height: 340px;">
 
         <div class="container -translate-y-32">
@@ -248,7 +248,7 @@
                 </div>
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
-                        {% for product in products %}
+                        {% for product in most_viewed %}
                         <li class="glide__slide">
                             <!-- single product -->
                             {% include 'store/components/product.html' %}

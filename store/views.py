@@ -16,9 +16,11 @@ def homepage(request):
     products = Product.objects.all()
     for _product in products:
         _product.price = format_price(str(_product.price))
-            
+    
+    most_sold = products.order_by('-sold_count')
+    most_viewed = products.order_by('-view_count')
         
-    return render(request, 'store/index.html', { "categories": Categorie.objects.all(), "products": products })
+    return render(request, 'store/index.html', { "categories": Categorie.objects.all(), "products": products.order_by('-id'), 'most_sold' : most_sold, 'most_viewed': most_viewed })
 
 def login(request):
     if request.user.id != None:
