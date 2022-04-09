@@ -348,8 +348,22 @@
             </form>
         </div>
 
-        <div class="" x-show="tabIndex == 2">
-            Methode de paiement: Orange Money, Cash
+        <div class=" p-4 flex flex-col gap-3 items-center" x-show="tabIndex == 2">
+            <h1 class="w-full text-center">Methode de paiement</h1>
+            <div class="flex flex-col sm:flex-row border rounded overflow-hidden ">
+                <button @click="changepaymentInfo('cash')" class="flex flex-col items-center gap-3 px-6 py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition" :class="{ 'border-2': pm == 'cash' }">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-16 w-16" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M466 355.9H46c-7.7 0-14 6.3-14 14s6.3 14 14 14h420c7.7 0 14-6.3 14-14s-6.3-14-14-14z" fill="currentColor"></path><path d="M466 403.9H46c-7.7 0-14 6.3-14 14s6.3 14 14 14h420c7.7 0 14-6.3 14-14s-6.3-14-14-14z" fill="currentColor"></path><path d="M444.9 80.1H67.1C47.8 80.1 32 95.9 32 115.2V293c0 19.3 15.8 35.1 35.1 35.1h377.8c19.3 0 35.1-15.8 35.1-35.1V115.2c0-19.3-15.8-35.1-35.1-35.1zM114 296.1H78c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm0-156H78c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm142 144c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80zm178 12h-36c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm0-156h-36c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14z" fill="currentColor"></path><circle cx="256" cy="206" r="53" fill="currentColor"></circle></svg>
+                    <h3>Cash</h3>
+                </button>
+                <button @click="changepaymentInfo('orange-money')" :class="{ 'border-2': pm == 'orange-money' }" class="flex flex-col items-center gap-3 px-6  py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition">
+                    <img src="{% static '/images/logo-orange-money.png' %}" class="h-16 w-16 object-contain" alt="Orange Money">
+                    <h3>Orange Money</h3>
+                </button>
+                <button @click="changepaymentInfo('moov-money')"  :class="{ 'border-2': pm == 'moov-money' }" class="flex flex-col items-center gap-3 px-6  py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition">
+                    <img src="{% static '/images/logo-moov-money.png' %}" class="h-16 w-16 object-contain" alt="Moov Money">
+                    <h3>Moov Money</h3>
+                </button>
+            </div>
         </div>
         <!-- account content end -->
     </div>
@@ -363,6 +377,7 @@
             shOldPwd: false,
             shNewPwd: false,
             shConfirmPwd: false,
+            pm: '{{pm}}',
             changePasswordLoading: false,
             changeAddressLoading: false,
             changeprofilInfoLoading: false,
@@ -376,6 +391,7 @@
                     data
                 }) => {
                     if (data.isOk == true) {
+                        
                         notyf.success('Terminé')
                     } else if (data.error_type == "password-invalid") {
                         notyf.error('Le mot de passe actuel est incorrecte')
@@ -412,7 +428,7 @@
                 })
             },
             submitChangeprofilInfo: function(e, form) {
-                e.preventDefault()
+                
                 notyf = new window.Notyf()
                 this.changeprofilInfoLoading = true
                 const fD = new FormData(form)
@@ -429,6 +445,31 @@
                     notyf.error('Une erreur s\'est produite, actualisez')
                 }).finally(() => {
                     this.changeprofilInfoLoading = false
+                })
+            },
+            changepaymentInfo: function(method) {
+                const csrftoken = document.querySelector("div#csrf input[name='csrfmiddlewaretoken']").getAttribute("value")
+                axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
+                
+                notyf = new window.Notyf()
+                this.changePaymentMethodLoading = true
+                axios.post("/api/account/change-payment-info", {method}).then(({
+                    data
+                }) => {
+                    if (data.isOk == true) {
+                        this.pm = method
+                        notyf.success('Methode de paiement changée')
+                    } else if (data.error_type == 'not-logged') {
+                        window.location.href = "/connexion"
+                    }
+                    else {
+                        notyf.error('L\opération à échouée')
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    notyf.error('Une erreur s\'est produite, actualisez')
+                }).finally(() => {
+                    this.changePaymentMethodLoading = false
                 })
             },
             submitChangePaymentMethod: function(e, form) {

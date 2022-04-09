@@ -1,3 +1,5 @@
+import datetime
+from uuid import uuid4
 from django.db.models import *
 
 from base.settings import AUTH_USER_MODEL
@@ -26,9 +28,11 @@ class Product(Model):
 
 class Order(Model):
     user = ForeignKey(AUTH_USER_MODEL, on_delete=CASCADE)
+    code = UUIDField(default = uuid4, editable = False)
     cart = ManyToManyField('account.Cart')
+    ordered_date = DateField(default=datetime.date.today)
     finished = BooleanField(default=False)
     finished_date = DateField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.quantity} {self.product} par {self.user}"
+        return f"Nouvelle commande de {self.user} {self.ordered_date}"

@@ -17,6 +17,42 @@ function app() {
                 this.sideCart = false
             }
         },
+        orderedOverlay: false,
+        orderLoading: false,
+        Order(){
+            const notyf = new window.Notyf()
+            this.orderLoading = true;
+            const csrftoken = document.querySelector("div#csrf input[name='csrfmiddlewaretoken']").getAttribute("value")
+            axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
+            axios.post("/api/order-cart/").then(({data}) => {
+                console.log(data);
+                if (data.isOk) {
+                    this.orderedOverlay = true
+                    notyf.success("Commande faite !")
+                }
+                else if (data.error_type == 'empty-address'){
+                    notyf.error("Aucune adresse n'a été configuré ! !")
+                }
+                else if (data.error_type == 'empty-phone'){
+                    notyf.error("Aucun numéro de téléphone n'a été configuré !")
+                }
+                else if (data.error_type == 'empty-payment-method'){
+                    notyf.error("Aucun moyen de paiement n'a été configuré !")
+                }
+                else if (data.error_type == 'empty-cart'){
+                    notyf.error("Votre panier est vide !")
+                }
+                else {
+                    notyf.error("La commande à échouée !")
+                    // document.location.reload()
+                }
+            }).catch((err) => {
+                notyf.error("Une erreur s'est produite !")
+                // document.location.reload()
+            }).finally( ()=>{
+                this.orderLoading = false;
+            } );
+        },
         addToFav(productID){
             const notyf = new window.Notyf()
                 // loading

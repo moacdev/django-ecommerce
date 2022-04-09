@@ -19,6 +19,7 @@ class Address(Model):
     quarter = CharField('Quartier', max_length=128, blank=True)
     street_door = CharField('Rue et porte', max_length=128, blank=True)
     zipcode = CharField('Code postal', max_length=128, blank=True)
+    loc = CharField('GPS', max_length=128, blank=True)
     user = OneToOneField(AUTH_USER_MODEL, on_delete=CASCADE)
     def __str__(self) -> str:
         return f"Adresse de {self.user}"
@@ -37,3 +38,16 @@ class WishList(Model):
     product = ManyToManyField('store.Product')
     def __str__(self):
         return f"{self.product} favoris de {self.user}"
+
+class PaymentMethodTypes(Model):
+    method = CharField('Methode de paiement', max_length=100)
+    def __str__(self):
+        return f"Paiment par {self.method}"
+
+class PaymentMethod(Model):
+    user = OneToOneField(AUTH_USER_MODEL, on_delete=CASCADE)
+    method = CharField('Methode de paiement', max_length=100) # ForeignKey(PaymentMethodTypes, on_delete=CASCADE)
+    def __str__(self):
+        return f"{self.method} de {self.user}"
+
+

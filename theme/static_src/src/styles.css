@@ -7,3 +7,6 @@
 *, *:focus, *:hover, *:focus-within{
     outline: none !important;
 }
+html{
+    overflow-x: hidden;
+}

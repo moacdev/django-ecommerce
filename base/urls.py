@@ -15,13 +15,16 @@ Including another URLconf
 """
 import json
 from math import prod
+from pickle import FALSE
+from sqlite3 import Date
+import uuid
 from django.contrib import admin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import path
 from django.core import serializers
-from account.models import Address, Cart, WishList
-from base.helpers import format_price, serializeCart, serializeWishList
+from account.models import Address, Cart, PaymentMethod, WishList
+from base.helpers import format_price, serializeCart, serializeUserOrders, serializeWishList
 from store.models import Categorie, Order, Product
 from store.views import categories, categoryProducts, homepage, login, product, products, register
 from django.core.exceptions import PermissionDenied
@@ -46,8 +49,8 @@ def accountInfo(request):
 
     user = request.user
     address = Address.objects.filter(user=user).first()
-
-    return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'tabIndex': tabIndex, 'user': request.user, 'address': address })
+    pm = PaymentMethod.objects.filter(user=user).first()
+    return render(request, "store/account.html", { "categories": Categorie.objects.all(), 'tabIndex': tabIndex, 'user': request.user, 'address': address, 'pm': pm.method })
 
 def orderCart(request):
     if request.user.id is None:
@@ -56,12 +59,11 @@ def orderCart(request):
     user = request.user
     address = Address.objects.filter(user=user).first()
 
-    payment_method = None
-
+    payment_method = PaymentMethod.objects.filter(user=user).first()
     cart = userCart = Cart.objects.filter(user=request.user, ordered=False)
     cart, cartSum = serializeCart(userCart)
 
-    return render(request, "store/order-cart.html", { "categories": Categorie.objects.all(), 'user': request.user, 'payment': 's' , 'address': address,'payment_method': payment_method, 'cart': cart, 'cartSum': cartSum })
+    return render(request, "store/order-cart.html", { "categories": Categorie.objects.all(), 'user': request.user , 'address': address,'payment_method': payment_method, 'cart': cart, 'cartSum': cartSum })
 
 def changePwd(request):
     if request.user.id is None:
@@ -83,7 +85,9 @@ def cart(request):
 def orders(request):
     if request.user.id is None:
         return redirect(to="/connexion")
-    return render(request, "store/orders.html", { "categories": Categorie.objects.all() })
+    user = request.user
+    userOrders = Order.objects.filter(user=user)
+    return render(request, "store/orders.html", { "categories": Categorie.objects.all(), 'userOrders': serializeUserOrders(userOrders) })
 
 def search(request):
     return render(request, "store/search.html", { "categories": Categorie.objects.all() })
@@ -169,6 +173,20 @@ def apiChangePaymentInfo(request):
     # Si l'utilisateur n'est pas connecter o arrete
     if request.user.id is None:
         return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
+
+    method = (json.loads(request.body))['method']
+    if method is None:
+        return JsonResponse({ "isOk": False, "error_type": 'invalid-data' })
+
+    user = request.user
+
+    if PaymentMethod.objects.filter(user=user).exists() == True:
+        user_method = PaymentMethod.objects.filter(user=user).first()
+        user_method.method = method
+        user_method.save()
+    else:
+        PaymentMethod.objects.create(user=user, method=method)
+
     # On return à la vue une reponse comme quoi tous ses bien passée
     return JsonResponse({ "isOk": True })
 
@@ -263,6 +281,48 @@ def apiAddToFav(request):
     # On return la reponse a la vue
     return JsonResponse({ "isOk": True, 'wishCount': userWishList.product.count()  })
 
+def ApiOrderCart(request):
+
+     # On n'accepte que les requêtes en postes et l'utilisateur doit aussi être authentifié authentifié
+    if request.method != 'POST':
+        raise PermissionDenied()
+
+    # Si l'utilisateur n'est pas connecter o arrete
+    if request.user.id is None:
+        return JsonResponse({ "isOk": False, "error_type": 'not-logged' })
+
+    user = request.user
+
+    if user.phone is None or user.phone == '':
+        return JsonResponse({ "isOk": False, "error_type": 'empty-phone' })
+
+    address = Address.objects.filter(user=user).exists()
+    
+    if address == False:
+        return JsonResponse({ "isOk": False, "error_type": 'empty-address' })
+
+    paymentMethod = PaymentMethod.objects.filter(user=user).exists()
+
+    if paymentMethod == False:
+        return JsonResponse({ "isOk": False, "error_type": 'empty-payment-method' })
+
+    if Cart.objects.filter(user=user, ordered=False).exists() == False:
+        return JsonResponse({ "isOk": False, "error_type": 'empty-cart' })
+
+    userActivesCart = Cart.objects.filter(user=user, ordered=False)
+
+    applyCartOrdered = Order.objects.create(user=user)
+
+    for cart in userActivesCart:
+        cart.ordered = True
+        cart.ordered_date = Date.today()
+        cart.save()
+        applyCartOrdered.cart.add(cart)
+    
+    # On return la reponse a la vue
+    return JsonResponse({ "isOk": True })
+
+
 
 urlpatterns = [
     path('', homepage),
@@ -281,6 +341,7 @@ urlpatterns = [
     path('boutique/', storeInfo),
 
     path('commander-mon-panier/', orderCart),
+    path('api/order-cart/', ApiOrderCart),
 
     path('api/account/change-password', apiChangePassword),
     path('api/account/change-addresses-info', apiChangeAddresses),

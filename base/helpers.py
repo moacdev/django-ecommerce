@@ -39,7 +39,7 @@ def serializeCart(userCart):
             'quantity': _cart.quantity
         }
         cart.append(data)
-    return cart, cartSum
+    return cart, format_price(str(cartSum))
 
 def serializeWishList(userWishes):
     wish = []
@@ -83,3 +83,23 @@ def serializeProducts(_products):
         }
         products.append(_product)
     return products
+
+def serializeUserOrders(userOrders):
+    orders = []
+
+    for order in userOrders:
+        carts, cartSum = serializeCart(order.cart.all())
+        _order = {
+            'carts': carts,
+            'cartSum': cartSum,
+            'code': order.code,
+            'finished': order.finished,
+            'ordered_date': order.ordered_date,
+        }
+        orders.append( _order )
+    
+    return orders
+
+
+
+
