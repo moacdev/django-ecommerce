@@ -1,8 +1,8 @@
 # django-ecommerce
 
-[url=https://ibb.co/4ZszPsQ][img]https://i.ibb.co/4ZszPsQ/Screen-Shot-2022-08-26-at-17-40-00.png[/img][/url]
+![alt text](https://ibb.co/4ZszPsQ)
 
-Pré-requis:\
+## Pré-requis:\
 |    Git\
 |    Python3.10+
 ## Deploiemnt
