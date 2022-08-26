@@ -1,6 +1,6 @@
 # django-ecommerce
 
-![alt text](https://ibb.co/4ZszPsQ)
+[![eDango](https://i.postimg.cc/7hd2bK8S/Screen-Shot-2022-08-26-at-17-40-00.png)](https://postimg.cc/ZvPRMFqq)
 
 ## Pré-requis:\
 |    Git\
