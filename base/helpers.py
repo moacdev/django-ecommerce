@@ -1,45 +1,62 @@
 import math
 
-from store.models import Product
+from store.models import Product, Categorie
 
 
 def format_price(price: str):
-    price_len = len(price)
-    formated_price = price
-    brk = 3
-    price_brks = math.ceil(len(price) / brk)
-    i = 0
-    while i < price_brks:
-        brk_computed = price_len - brk*i 
-        i+=1
-        if brk_computed == price_len or brk_computed == 0:
-            continue
-        formated_price = formated_price[:brk_computed] + '.' + formated_price[brk_computed:]
-    return formated_price
+    # Convert to string and handle any leading/trailing spaces
+    price = str(price).strip()
+    
+    # Reverse the string to group from right to left
+    reversed_price = price[::-1]
+    
+    # Split into groups of 3 and join with spaces
+    groups = [reversed_price[i:i+3] for i in range(0, len(reversed_price), 3)]
+    formatted_price = ' '.join(groups)
+    
+    # Reverse back to get the correct order
+    return formatted_price[::-1]
 
 def serializeCart(userCart):
     cart = []
     cartSum = 0
     for _cart in userCart:
-        userID = _cart.user.id
-        cartSum += int(_cart.product.price)*int(_cart.quantity)
-        _product = {
-            'id': _cart.product.id,
-            'label': _cart.product.label,
-            'slug': _cart.product.slug,
-            'stock': _cart.product.stock,
-            'category_slug': _cart.product.category.slug,
-            'category': _cart.product.category.label,
-            'price': format_price(str(_cart.product.price)),
-            'image1': _cart.product.image1.url,
-        }
-        data = {
-            'userID': userID,
-            'product': _product,
-            'quantity': _cart.quantity
-        }
-        cart.append(data)
-    return cart, format_price(str(cartSum))
+        # Skip if product is None
+        if not _cart.product:
+            continue
+        
+        # get product from db and check if category is None
+        product = Product.objects.get(id=_cart.product.id)
+        category = Categorie.objects.get(id=product.category.id)
+            
+        # Skip if category is None
+        if not category:
+            continue
+            
+        try:
+            cartSum += int(_cart.product.price)*int(_cart.quantity)
+            _product = {
+                'id': _cart.product.id,
+                'label': _cart.product.label,
+                'slug': _cart.product.slug,
+                'stock': _cart.product.stock,
+                'category_slug': category.slug,
+                'category': category.label,
+                'price_formatted': format_price(str(_cart.product.price)),
+                'price': _cart.product.price,
+                'image1': _cart.product.image1.url,
+            }
+            data = {
+                'userID': _cart.user.id,
+                'product': _product,
+                'quantity': _cart.quantity
+            }
+            cart.append(data)
+        except AttributeError as e:
+            print("AttributeError", e)
+            continue
+            
+    return cart, cartSum
 
 def serializeWishList(userWishes):
     wish = []

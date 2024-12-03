@@ -1,0 +1,140 @@
+{% extends 'store/layout/base.html' %}
+
+{% block titre %}{{ action }} Product{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
+        <h1 class="text-2xl font-bold mb-6">{{ action }} Product</h1>
+
+        {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+            <div class="p-4 rounded-md {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                <input type="text" 
+                       name="label" 
+                       required 
+                       value="{{ product.label|default:'' }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+
+            <div x-data="{ showCustomCategory: false }">
+                <label class="block text-sm font-medium text-gray-700">Category</label>
+                <select name="category" 
+                        x-on:change="showCustomCategory = ($event.target.value === 'other')"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <option value="">Select a category</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" 
+                            {% if product and product.category.id == category.id %}selected{% endif %}>
+                        {{ category.label }}
+                    </option>
+                    {% endfor %}
+                    <option value="other">Autre</option>
+                </select>
+
+                <input x-show="showCustomCategory"
+                       type="text"
+                       name="new_category"
+                       placeholder="Enter new category name"
+                       class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Prix</label>
+                <input type="number"
+                       step="50"
+                       name="price"
+                       required
+                       value="{{ product.price|default:'' }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Stock</label>
+                <input type="number"
+                       name="stock"
+                       required
+                       value="{{ product.stock|default:'' }}"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea name="description"
+                          required
+                          rows="4"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ product.description|default:'' }}</textarea>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Image Principale</label>
+                    {% if product.image1 %}
+                    <img src="{{ product.image1.url }}" alt="Current main image" class="h-32 object-cover mb-2">
+                    {% endif %}
+                    <input type="file"
+                           name="image1"
+                           accept="image/*"
+                           {% if not product %}required{% endif %}
+                           class="mt-1 block w-full">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Additional Image 2</label>
+                    {% if product.image2 %}
+                    <img src="{{ product.image2.url }}" alt="Current image 2" class="h-32 object-cover mb-2">
+                    {% endif %}
+                    <input type="file"
+                           name="image2"
+                           accept="image/*"
+                           class="mt-1 block w-full">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Additional Image 3</label>
+                    {% if product.image3 %}
+                    <img src="{{ product.image3.url }}" alt="Current image 3" class="h-32 object-cover mb-2">
+                    {% endif %}
+                    <input type="file"
+                           name="image3"
+                           accept="image/*"
+                           class="mt-1 block w-full">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Additional Image 4</label>
+                    {% if product.image4 %}
+                    <img src="{{ product.image4.url }}" alt="Current image 4" class="h-32 object-cover mb-2">
+                    {% endif %}
+                    <input type="file"
+                           name="image4"
+                           accept="image/*"
+                           class="mt-1 block w-full">
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <a href="{% url 'vendor_dashboard' %}"
+                   class="px-4 py-2 border rounded-md hover:bg-gray-50">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    {{ action }} Product
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

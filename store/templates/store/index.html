@@ -1,291 +1,588 @@
-{% extends 'store/layout/base.html' %} {% load static %} {% block titre %} Accueil {% endblock titre %} {% block content %}
+{% extends 'store/layout/base.html' %} {% load static %} {% block titre %}
+Accueil {% endblock titre %} {% block content %}
 
 <!-- shop wrapper -->
 <div class="items-start relative">
-    {% if products|length > 0 %}
-    <div class="w-full mt-36">
-        <div class="px-4 sm:px-0 sm:container -translate-y-32">
-            <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">Les nouvautés</h1>
-            <svg id="new-products-loader" class="h-8 w-12 my-4 mx-auto flex fill-current text-gray-800" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                <rect y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.5s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.5s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="30" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.25s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.25s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="60" width="15" height="140" rx="6">
-                    <animate attributeName="height"
-                         begin="0s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="90" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.25s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.25s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="120" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.5s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.5s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-            </svg>
-            <div class="invisible h-0 glide-new-products relative" pr-count="{{ products|length }}">
-                <div data-glide-el="controls">
-                    <button data-glide-dir="<" type="button" class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-prev>
-                        <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
-                            <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"></path></svg>
-                        </span>
-                    </button>
-                    <button data-glide-dir=">" type="button" class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-next>
-                        <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
-                            <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path></svg>
-                        </span>
-                    </button>
-                </div>
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        {% for product in products %}
-                        <li class="glide__slide">
-                            <!-- single product -->
-                            {% include 'store/components/product.html' %}
-                            <!-- single product end -->
-                        </li>
-                        {% empty %} Aucun produit {% endfor %}
-                    </ul>
-                </div>
-            </div>
+  {% if products|length > 0 %}
+  <div class="w-full mt-36">
+    <div class="px-4 sm:px-0 sm:container -translate-y-32">
+      <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">
+        Les nouvautés
+      </h1>
+      <svg
+        id="new-products-loader"
+        class="h-8 w-12 my-4 mx-auto flex fill-current text-gray-800"
+        viewBox="0 0 135 140"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#fff"
+      >
+        <rect y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.5s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.5s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="30" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.25s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.25s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="60" width="15" height="140" rx="6">
+          <animate
+            attributeName="height"
+            begin="0s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="90" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.25s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.25s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="120" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.5s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.5s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+      </svg>
+      <div
+        class="invisible h-0 glide-new-products relative"
+        pr-count="{{ products|length }}"
+      >
+        <div data-glide-el="controls">
+          <button
+            data-glide-dir="<"
+            type="button"
+            class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none"
+            data-carousel-prev
+          >
+            <span
+              class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white"
+            >
+              <svg
+                class="w-5 h-5 fill-current sm:w-6 sm:h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--ic"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"
+                ></path>
+              </svg>
+            </span>
+          </button>
+          <button
+            data-glide-dir=">"
+            type="button"
+            class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none"
+            data-carousel-next
+          >
+            <span
+              class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white"
+            >
+              <svg
+                class="w-5 h-5 fill-current sm:w-6 sm:h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--ic"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"
+                ></path>
+              </svg>
+            </span>
+          </button>
         </div>
-    </div>
-    {% endif %}
-
-    {% if most_sold|length > 0 %}
-    <!-- products -->
-    <div class="w-full mt-8 bg-neutral-200" style="height: 460px;">
-
-        <div class="container -translate-y-32">
-            <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">Meilleurs ventes</h1>
-            <svg id="most-sold-loader" class="h-8 w-12 my-4 mx-auto flex fill-current text-gray-800" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                <rect y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.5s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.5s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="30" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.25s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.25s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="60" width="15" height="140" rx="6">
-                    <animate attributeName="height"
-                         begin="0s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="90" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.25s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.25s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="120" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.5s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.5s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-            </svg>
-            <div class="invisible h-0 glide-most-sold"  pr-count="{{ products|length }}">
-                <div data-glide-el="controls">
-                    <button data-glide-dir="<" type="button" class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-prev>
-                        <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
-                            <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"></path></svg>
-                        </span>
-                                        </button>
-                    <button data-glide-dir=">" type="button" class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-next>
-                        <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
-                            <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path></svg>
-                        </span>
-                    </button>
-                </div>
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        {% for product in most_sold %}
-                        <li class="glide__slide">
-                            <!-- single product -->
-                            {% include 'store/components/product.html' %}
-                            <!-- single product end -->
-                        </li>
-                        {% empty %} Aucun produit {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <a href="/produits" class="rounded text-white translate-y-1 my-4 mx-auto inline-block bg-orange-600 hover:bg-orange-700 transition p-2">Tout voir</a>
-            <!-- product wrapper end -->
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            {% for product in products %}
+            <li class="glide__slide">
+              <!-- single product -->
+              {% include 'store/components/product.html' %}
+              <!-- single product end -->
+            </li>
+            {% empty %} Aucun produit {% endfor %}
+          </ul>
         </div>
+      </div>
     </div>
-    {% endif %}
-
-    {% if most_viewed|length > 0 %}
-    <div class="w-full" style="height: 340px;">
-
-        <div class="container -translate-y-32">
-            <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">Les plus populaire</h1>
-            <svg id="most-popular-loader" class="h-8 w-12 my-4 mx-auto flex fill-current text-gray-800" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                <rect y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.5s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.5s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="30" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.25s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.25s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="60" width="15" height="140" rx="6">
-                    <animate attributeName="height"
-                         begin="0s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="90" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.25s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.25s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-                <rect x="120" y="10" width="15" height="120" rx="6">
-                    <animate attributeName="height"
-                         begin="0.5s" dur="1s"
-                         values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                         repeatCount="indefinite" />
-                    <animate attributeName="y"
-                         begin="0.5s" dur="1s"
-                         values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                         repeatCount="indefinite" />
-                </rect>
-            </svg>
-            <div class="invisible h-0 glide-most-popular"  pr-count="{{ products|length }}">
-                <div data-glide-el="controls">
-                    <button data-glide-dir="<" type="button" class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-prev>
-                        <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
-                            <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"></path></svg>
-                        </span>
-                                                        </button>
-                    <button data-glide-dir=">" type="button" class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none" data-carousel-next>
-                        <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white">
-                            <svg class="w-5 h-5 fill-current sm:w-6 sm:h-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"></path></svg>
-                        </span>
-                    </button>
-                </div>
-                <div class="glide__track" data-glide-el="track">
-                    <ul class="glide__slides">
-                        {% for product in most_viewed %}
-                        <li class="glide__slide">
-                            <!-- single product -->
-                            {% include 'store/components/product.html' %}
-                            <!-- single product end -->
-                        </li>
-                        {% empty %} Aucun produit {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <a href="/produits" class="rounded text-white my-4 mx-auto inline-block translate-y-1 bg-orange-600 hover:bg-orange-700 transition p-2">Tout voir</a>
-
+  </div>
+  {% endif %} {% if most_sold|length > 0 %}
+  <!-- products -->
+  <div class="w-full mt-8 bg-neutral-200" style="height: 460px">
+    <div class="container -translate-y-32">
+      <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">
+        Meilleurs ventes
+      </h1>
+      <svg
+        id="most-sold-loader"
+        class="h-8 w-12 my-4 mx-auto flex fill-current text-gray-800"
+        viewBox="0 0 135 140"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#fff"
+      >
+        <rect y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.5s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.5s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="30" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.25s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.25s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="60" width="15" height="140" rx="6">
+          <animate
+            attributeName="height"
+            begin="0s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="90" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.25s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.25s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="120" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.5s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.5s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+      </svg>
+      <div
+        class="invisible h-0 glide-most-sold"
+        pr-count="{{ products|length }}"
+      >
+        <div data-glide-el="controls">
+          <button
+            data-glide-dir="<"
+            type="button"
+            class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none"
+            data-carousel-prev
+          >
+            <span
+              class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white"
+            >
+              <svg
+                class="w-5 h-5 fill-current sm:w-6 sm:h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--ic"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"
+                ></path>
+              </svg>
+            </span>
+          </button>
+          <button
+            data-glide-dir=">"
+            type="button"
+            class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none"
+            data-carousel-next
+          >
+            <span
+              class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white"
+            >
+              <svg
+                class="w-5 h-5 fill-current sm:w-6 sm:h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--ic"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"
+                ></path>
+              </svg>
+            </span>
+          </button>
         </div>
-    </div>
-    {% endif %}
-    <div class="w-full bg-white">
-        <div class="container flex flex-col items-center">
-            <div class="container pb-8">
-                <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">Catégories</h1>
-                <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-3">
-                    <!-- single category -->
-                    {% for category in categories %}
-                    <div class="relative group rounded-sm overflow-hidden h-80">
-                        <img src="{{ category.image.url }}" class="group-hover:scale-110 transition w-full h-full object-contain object-center">
-                        <a href="/categories/{{ category.slug }}" class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center text-xl text-white 
-                            font-roboto font-medium tracking-wide transition">
-                            {{ category.label }}
-                        </a>
-                    </div>
-                    {% empty %} Aucune Categorie {% endfor %}
-                    <!-- single category end -->
-                </div>
-                <!-- product wrapper end -->
-            </div>
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            {% for product in most_sold %}
+            <li class="glide__slide">
+              <!-- single product -->
+              {% include 'store/components/product.html' %}
+              <!-- single product end -->
+            </li>
+            {% empty %} Aucun produit {% endfor %}
+          </ul>
         </div>
+      </div>
+      <a
+        href="/produits"
+        class="rounded text-white translate-y-1 my-4 mx-auto inline-block bg-orange-600 hover:bg-orange-700 transition p-2"
+        >Tout voir</a
+      >
+      <!-- product wrapper end -->
     </div>
+  </div>
+  {% endif %} {% if most_viewed|length > 0 %}
+  <div class="w-full" style="height: 340px">
+    <div class="container -translate-y-32">
+      <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">
+        Les plus populaire
+      </h1>
+      <svg
+        id="most-popular-loader"
+        class="h-8 w-12 my-4 mx-auto flex fill-current text-gray-800"
+        viewBox="0 0 135 140"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#fff"
+      >
+        <rect y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.5s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.5s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="30" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.25s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.25s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="60" width="15" height="140" rx="6">
+          <animate
+            attributeName="height"
+            begin="0s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="90" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.25s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.25s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+        <rect x="120" y="10" width="15" height="120" rx="6">
+          <animate
+            attributeName="height"
+            begin="0.5s"
+            dur="1s"
+            values="120;110;100;90;80;70;60;50;40;140;120"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="y"
+            begin="0.5s"
+            dur="1s"
+            values="10;15;20;25;30;35;40;45;50;0;10"
+            calcMode="linear"
+            repeatCount="indefinite"
+          />
+        </rect>
+      </svg>
+      <div
+        class="invisible h-0 glide-most-popular"
+        pr-count="{{ products|length }}"
+      >
+        <div data-glide-el="controls">
+          <button
+            data-glide-dir="<"
+            type="button"
+            class="flex absolute top-1/2 -translate-y-1/2 left-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none"
+            data-carousel-prev
+          >
+            <span
+              class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white"
+            >
+              <svg
+                class="w-5 h-5 fill-current sm:w-6 sm:h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--ic"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6l6 6l1.41-1.41z"
+                ></path>
+              </svg>
+            </span>
+          </button>
+          <button
+            data-glide-dir=">"
+            type="button"
+            class="flex absolute top-1/2 -translate-y-1/2 right-0 z-30 justify-center items-center px-4 h-5 cursor-pointer group focus:outline-none"
+            data-carousel-next
+          >
+            <span
+              class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-neutral-800 text-gray-400 hover:text-white"
+            >
+              <svg
+                class="w-5 h-5 fill-current sm:w-6 sm:h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                aria-hidden="true"
+                role="img"
+                class="iconify iconify--ic"
+                width="32"
+                height="32"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6l-6 6l-1.41-1.41z"
+                ></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            {% for product in most_viewed %}
+            <li class="glide__slide">
+              <!-- single product -->
+              {% include 'store/components/product.html' %}
+              <!-- single product end -->
+            </li>
+            {% empty %} Aucun produit {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <a
+        href="/produits"
+        class="rounded text-white my-4 mx-auto inline-block translate-y-1 bg-orange-600 hover:bg-orange-700 transition p-2"
+        >Tout voir</a
+      >
+    </div>
+  </div>
+  {% endif %}
+  <div class="w-full bg-white">
+    <div class="container flex flex-col items-center">
+      <div class="container pb-8">
+        <h1 class="w-full text-center text-2xl md:text-3xl my-2 font-roboto">
+          Catégories
+        </h1>
+        <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-3">
+          <!-- single category -->
+          {% for category in categories %}
+          <div class="relative group rounded-sm overflow-hidden h-80">
+            <!-- <img src="" class="group-hover:scale-110 transition w-full h-full object-contain object-center"/> -->
+            <a
+              href="/categories/{{ category.slug }}"
+              class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center text-xl text-white font-roboto font-medium tracking-wide transition"
+            >
+              {{ category.label }}
+            </a>
+          </div>
+          {% empty %} Aucune Categorie {% endfor %}
+          <!-- single category end -->
+        </div>
+        <!-- product wrapper end -->
+      </div>
+    </div>
+  </div>
 
-    <!-- products end -->
+  <!-- products end -->
 </div>
 
 {% endblock content %}

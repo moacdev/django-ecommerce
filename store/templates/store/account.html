@@ -1,495 +1,1006 @@
-{% extends 'store/layout/base.html' %} {% load static %} {% block titre %} Mon compte {% endblock titre %} {% block content %}
+{% extends 'store/layout/base.html' %} {% load static %} {% block titre %} Mon
+compte {% endblock titre %} {% block content %}
 
 <!-- breadcrum -->
 <div class="pt-4 container rounded-t-lg flex gap-3 items-center bg-white">
-    <a href="/" class="text-orange-600 text-base">
-        <i class="fas fa-home"></i>
-    </a>
-    <span class="text-sm text-gray-400"><i class="fas fa-chevron-right"></i></span>
-    <p class="text-gray-600 font-medium uppercase">Mon compte</p>
+  <a href="/" class="text-orange-600 text-base">
+    <i class="fas fa-home"></i>
+  </a>
+  <span class="text-sm text-gray-400"
+    ><i class="fas fa-chevron-right"></i
+  ></span>
+  <p class="text-gray-600 font-medium uppercase">Mon compte</p>
 </div>
 <!-- breadcrum end -->
 
-<div class="border-b rounded-b-lg border-gray-200 container flex flex-col bg-white" id="tabs" default-tab-index="{{tabIndex}}" x-data="data">
-    <ul class="flex flex-wrap justify-center -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-        <li class="">
-            <a x-on:click="tabIndex = 0" x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 0, 'border-blue-600 text-blue-600': tabIndex == 0 } " href="#" class="flex p-4 rounded-t-lg border-b-2 group">
-                <svg class="mr-2 w-5 h-5" x-bind:class=" { 'text-gray-400': tabIndex != 0, 'border-blue-600 text-blue-600': tabIndex == 0 }" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path></svg>Profil
-            </a>
-        </li>
-        <li class="">
-            <a x-on:click="tabIndex = 1" x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 1, 'border-blue-600 text-blue-600': tabIndex == 1 } " href="#" class="flex p-4 rounded-t-lg border-b-2 group">
-                <svg class="mr-2 w-5 h-5" x-bind:class=" { 'text-gray-400': tabIndex != 1, 'border-blue-600 text-blue-600': tabIndex == 1 }" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path></svg>Adresses
-            </a>
-        </li>
-        <li class="">
-            <a x-on:click="tabIndex = 2" x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 2, 'border-blue-600 text-blue-600': tabIndex == 2 } " href="#" class="flex p-4 rounded-t-lg border-b-2 group">
-                <svg class="mr-2 w-5 h-5" x-bind:class=" { 'text-gray-400': tabIndex != 2, 'border-blue-600 text-blue-600': tabIndex == 2 }" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path></svg>Moyen
-                de paiement
-            </a>
-        </li>
-        <li class="">
-            <a x-on:click="tabIndex = 3" x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 3, 'border-blue-600 text-blue-600': tabIndex == 3 } " href="#" class="flex p-4 rounded-t-lg border-b-2 group">
-                <svg class="mr-2 w-5 h-5 fill-current" x-bind:class=" { 'text-gray-700': tabIndex != 3, 'border-blue-700 text-blue-700': tabIndex == 3 }" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--healthicons"
-                    width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 48 48"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 18a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h26a2 2 0 0 0 2-2V20a2 2 0 0 0-2-2H11Zm4 8h18v-2H15v2Zm18 5H15v-2h18v2Zm-18 5h18v-2H15v2Z"></path><path d="M30 18v-2a6 6 0 0 0-12 0v2h12ZM24 6c-5.523 0-10 4.477-10 10v6h20v-6c0-5.523-4.477-10-10-10Z"></path></g></svg>                Changer de mot de passe
-            </a>
-        </li>
+<div
+  class="border-b rounded-b-lg border-gray-200 container flex flex-col bg-white"
+  id="tabs"
+  default-tab-index="{{tabIndex}}"
+  x-data="data"
+>
+  <ul
+    class="flex flex-wrap justify-center -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400"
+  >
+    <li class="">
+      <a
+        x-on:click="tabIndex = 0"
+        x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 0, 'border-blue-600 text-blue-600': tabIndex == 0 } "
+        href="#"
+        class="flex p-4 rounded-t-lg border-b-2 group"
+      >
+        <svg
+          class="mr-2 w-5 h-5"
+          x-bind:class=" { 'text-gray-400': tabIndex != 0, 'border-blue-600 text-blue-600': tabIndex == 0 }"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+            clip-rule="evenodd"
+          ></path></svg
+        >Profil
+      </a>
+    </li>
+    <li class="">
+      <a
+        x-on:click="tabIndex = 1"
+        x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 1, 'border-blue-600 text-blue-600': tabIndex == 1 } "
+        href="#"
+        class="flex p-4 rounded-t-lg border-b-2 group"
+      >
+        <svg
+          class="mr-2 w-5 h-5"
+          x-bind:class=" { 'text-gray-400': tabIndex != 1, 'border-blue-600 text-blue-600': tabIndex == 1 }"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+          <path
+            fill-rule="evenodd"
+            d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+            clip-rule="evenodd"
+          ></path></svg
+        >Adresses
+      </a>
+    </li>
+    <li class="">
+      <a
+        x-on:click="tabIndex = 2"
+        x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 2, 'border-blue-600 text-blue-600': tabIndex == 2 } "
+        href="#"
+        class="flex p-4 rounded-t-lg border-b-2 group"
+      >
+        <svg
+          class="mr-2 w-5 h-5"
+          x-bind:class=" { 'text-gray-400': tabIndex != 2, 'border-blue-600 text-blue-600': tabIndex == 2 }"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"
+          ></path></svg
+        >Moyen de paiement
+      </a>
+    </li>
+    <li class="">
+      <a
+        x-on:click="tabIndex = 3"
+        x-bind:class=" { 'border-transparent hover:text-gray-600 hover:border-gray-300': tabIndex != 3, 'border-blue-600 text-blue-600': tabIndex == 3 } "
+        href="#"
+        class="flex p-4 rounded-t-lg border-b-2 group"
+      >
+        <svg
+          class="mr-2 w-5 h-5 fill-current"
+          x-bind:class=" { 'text-gray-700': tabIndex != 3, 'border-blue-700 text-blue-700': tabIndex == 3 }"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          aria-hidden="true"
+          role="img"
+          class="iconify iconify--healthicons"
+          width="32"
+          height="32"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 48 48"
+        >
+          <g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd">
+            <path
+              d="M11 18a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h26a2 2 0 0 0 2-2V20a2 2 0 0 0-2-2H11Zm4 8h18v-2H15v2Zm18 5H15v-2h18v2Zm-18 5h18v-2H15v2Z"
+            ></path>
+            <path
+              d="M30 18v-2a6 6 0 0 0-12 0v2h12ZM24 6c-5.523 0-10 4.477-10 10v6h20v-6c0-5.523-4.477-10-10-10Z"
+            ></path>
+          </g>
+        </svg>
+        Changer de mot de passe
+      </a>
+    </li>
+  </ul>
 
-    </ul>
+  <div class="container">
+    <!-- account content -->
+    <div
+      class="col-span-9 rounded px-6 pt-5 pb-7 mt-6 lg:mt-0"
+      x-show="tabIndex == 0"
+    >
+      <form
+        action="#"
+        x-ref="editProfil"
+        method="post"
+        x-on:submit="e => submitChangeprofilInfo(e, $refs.editProfil)"
+      >
+        {% csrf_token %}
+        <div class="space-y-4">
+          <div>
+            <label class="text-gray-600 mb-2 block"> Nom d'utilisateur </label>
+            <input
+              type="text"
+              class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+              name="username"
+              value="{{ user.username }}"
+              placeholder="Nom d'utilisateur"
+            />
+          </div>
 
-
-    <div class="container">
-
-        <!-- account content -->
-        <div class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0" x-show="tabIndex == 0">
-            <form action="#" x-ref="editProfil" method="post" x-on:submit="e => submitChangeprofilInfo(e, $refs.editProfil)">
-                {% csrf_token %}
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-gray-600 mb-2 block">
-                        Nom d'utilisateur
-                    </label>
-                        <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="username" value="{{ user.username }}" placeholder="Nom d'utilisateur">
-                    </div>
-
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                        Adresse email
-                    </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" value="{{ user.email }}" name="email" placeholder="Email">
-                        </div>
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                        Numéro
-                    </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="phone" placeholder="+223" value="{{ user.phone }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <button type="submit" class="px-6 py-2 text-center text-white bg-primary border border-primary rounded uppercase font-roboto font-medium">
-                <span x-show="!changeprofilInfoLoading">Enregistrer</span>
-                <svg x-show="changeprofilInfoLoading" class="h-6 w-10 fill-current text-white" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                    <rect y="10" width="15" height="120" rx="6">
-                        <animate attributeName="height"
-                             begin="0.5s" dur="1s"
-                             values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                             repeatCount="indefinite" />
-                        <animate attributeName="y"
-                             begin="0.5s" dur="1s"
-                             values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                             repeatCount="indefinite" />
-                    </rect>
-                    <rect x="30" y="10" width="15" height="120" rx="6">
-                        <animate attributeName="height"
-                             begin="0.25s" dur="1s"
-                             values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                             repeatCount="indefinite" />
-                        <animate attributeName="y"
-                             begin="0.25s" dur="1s"
-                             values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                             repeatCount="indefinite" />
-                    </rect>
-                    <rect x="60" width="15" height="140" rx="6">
-                        <animate attributeName="height"
-                             begin="0s" dur="1s"
-                             values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                             repeatCount="indefinite" />
-                        <animate attributeName="y"
-                             begin="0s" dur="1s"
-                             values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                             repeatCount="indefinite" />
-                    </rect>
-                    <rect x="90" y="10" width="15" height="120" rx="6">
-                        <animate attributeName="height"
-                             begin="0.25s" dur="1s"
-                             values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                             repeatCount="indefinite" />
-                        <animate attributeName="y"
-                             begin="0.25s" dur="1s"
-                             values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                             repeatCount="indefinite" />
-                    </rect>
-                    <rect x="120" y="10" width="15" height="120" rx="6">
-                        <animate attributeName="height"
-                             begin="0.5s" dur="1s"
-                             values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                             repeatCount="indefinite" />
-                        <animate attributeName="y"
-                             begin="0.5s" dur="1s"
-                             values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                             repeatCount="indefinite" />
-                    </rect>
-                </svg>
-            </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- account content -->
-        <div class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0" x-show="tabIndex == 3">
-            <form action="#" method="post" x-ref="chPwdForm" x-on:submit="e => submitChangePassword(e, $refs.chPwdForm)" class="">
-                {% csrf_token %}
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-gray-600 mb-2 block">
-                            Mot de passe actuelle
-                </label>
-                        <div class="relative">
-                            <span @click="shOldPwd = !shOldPwd" class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer">
-                                <svg class="h-6 w-6" x-show="shOldPwd" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fluent" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><g fill="none"><path d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204z" fill="currentColor"></path><path d="M10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0z" fill="currentColor"></path></g></svg>
-                                <svg class="h-6 w-6" x-show="!shOldPwd" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fluent" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><g fill="none"><path d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.097 8.097 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.09 7.09 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708l-15-15zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38l3.446 3.447z" fill="currentColor"></path><path d="M10.123 8.002l3.375 3.374a3.5 3.5 0 0 0-3.374-3.374z" fill="currentColor"></path><path d="M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.648 7.648 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6z" fill="currentColor"></path></g></svg>
-                            </span>
-                            <input :type="shOldPwd ? 'text' : 'password'" name="password" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" placeholder="Entrez votre mot de passe">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-gray-600 mb-2 block">
-                    Nouveau mot de passe
-                </label>
-                        <div class="relative">
-                            <span @click="shNewPwd = !shNewPwd" class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer">
-                                <svg class="h-6 w-6" x-show="shNewPwd" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fluent" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><g fill="none"><path d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204z" fill="currentColor"></path><path d="M10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0z" fill="currentColor"></path></g></svg>
-                                <svg class="h-6 w-6" x-show="!shNewPwd" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fluent" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><g fill="none"><path d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.097 8.097 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.09 7.09 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708l-15-15zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38l3.446 3.447z" fill="currentColor"></path><path d="M10.123 8.002l3.375 3.374a3.5 3.5 0 0 0-3.374-3.374z" fill="currentColor"></path><path d="M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.648 7.648 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6z" fill="currentColor"></path></g></svg>
-                            </span>
-                            <input :type="shNewPwd ? 'text' : 'password'" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="new_password" placeholder="Entrez le nouveau mot de passe">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-gray-600 mb-2 block">
-                    Confirmer le mot de passe
-                </label>
-                        <div class="relative">
-                            <span @click="shConfirmPwd = !shConfirmPwd" class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer">
-                                <svg class="h-6 w-6" x-show="shConfirmPwd" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fluent" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><g fill="none"><path d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204z" fill="currentColor"></path><path d="M10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0z" fill="currentColor"></path></g></svg>
-                                <svg class="h-6 w-6" x-show="!shConfirmPwd" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--fluent" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 20 20"><g fill="none"><path d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.097 8.097 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.09 7.09 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708l-15-15zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38l3.446 3.447z" fill="currentColor"></path><path d="M10.123 8.002l3.375 3.374a3.5 3.5 0 0 0-3.374-3.374z" fill="currentColor"></path><path d="M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.648 7.648 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6z" fill="currentColor"></path></g></svg>
-                            </span>
-                            <input :type="shConfirmPwd ? 'text' : 'password'" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="password_confirmation" placeholder="Re-entrez le nouveau mot de passe">
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <button type="submit" class="px-6 py-2 text-center text-white bg-primary border border-primary rounded transition uppercase font-roboto font-medium">
-                        <span x-show="!changePasswordLoading">Enregistrer</span>
-                        <svg x-show="changePasswordLoading" class="h-6 w-10 fill-current text-white" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                            <rect y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.5s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.5s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="30" y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.25s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.25s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="60" width="15" height="140" rx="6">
-                                <animate attributeName="height"
-                                     begin="0s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="90" y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.25s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.25s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="120" y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.5s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.5s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                        </svg>
-            </button>
-                </div>
-            </form>
-        </div>
-        <!-- account content end -->
-
-        <!-- account content -->
-        <div class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0" x-show="tabIndex == 1">
-            <form action="#" x-ref="addressForm" method="post" @submit="e => submitChangeAddress(e, $refs.addressForm)">
-                {% csrf_token %}
-                <div class="space-y-4">
-                    <!-- Form row -->
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <!-- Single input -->
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                        Pays
-                    </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="country" placeholder="Pays" value="{{ address.country }}">
-                        </div>
-                        <!-- single input end -->
-                        <!-- single input -->
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                        Ville
-                    </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="city" value="{{ address.city }}">
-                        </div>
-                        <!-- Single input end -->
-                    </div>
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                                Commune
-                            </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="common" value="{{ address.common }}">
-                        </div>
-
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                                Quartier
-                            </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="quarter" value="{{ address.quarter }}">
-                        </div>
-                    </div>
-
-                    <div class="grid sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                                Rue et porte
-                            </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="streetDoor" value="{{ address.street_door }}">
-                        </div>
-
-                        <div>
-                            <label class="text-gray-600 mb-2 block">
-                                Code postal (Optionel)
-                            </label>
-                            <input type="text" class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400" name="zipcode" value="{{ address.zipcode }}">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="mt-6">
-                    <button type="submit" class="px-6 py-2 text-center text-white bg-primary border border-primary rounded transition uppercase font-roboto font-medium">
-                        <span x-show="!changeAddressLoading">Enregistrer</span>
-                        <svg x-show="changeAddressLoading" class="h-6 w-10 fill-current text-white" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                            <rect y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.5s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.5s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="30" y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.25s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.25s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="60" width="15" height="140" rx="6">
-                                <animate attributeName="height"
-                                     begin="0s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="90" y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.25s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.25s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                            <rect x="120" y="10" width="15" height="120" rx="6">
-                                <animate attributeName="height"
-                                     begin="0.5s" dur="1s"
-                                     values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
-                                     repeatCount="indefinite" />
-                                <animate attributeName="y"
-                                     begin="0.5s" dur="1s"
-                                     values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
-                                     repeatCount="indefinite" />
-                            </rect>
-                        </svg>
-                        
-            </button>
-                </div>
-            </form>
-        </div>
-
-        <div class=" p-4 flex flex-col gap-3 items-center" x-show="tabIndex == 2">
-            <h1 class="w-full text-center">Methode de paiement</h1>
-            <div class="flex flex-col sm:flex-row border rounded overflow-hidden ">
-                <button @click="changepaymentInfo('cash')" class="flex flex-col items-center gap-3 px-6 py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition" :class="{ 'border-2': pm == 'cash' }">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="h-16 w-16" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M466 355.9H46c-7.7 0-14 6.3-14 14s6.3 14 14 14h420c7.7 0 14-6.3 14-14s-6.3-14-14-14z" fill="currentColor"></path><path d="M466 403.9H46c-7.7 0-14 6.3-14 14s6.3 14 14 14h420c7.7 0 14-6.3 14-14s-6.3-14-14-14z" fill="currentColor"></path><path d="M444.9 80.1H67.1C47.8 80.1 32 95.9 32 115.2V293c0 19.3 15.8 35.1 35.1 35.1h377.8c19.3 0 35.1-15.8 35.1-35.1V115.2c0-19.3-15.8-35.1-35.1-35.1zM114 296.1H78c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm0-156H78c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm142 144c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80zm178 12h-36c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm0-156h-36c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14z" fill="currentColor"></path><circle cx="256" cy="206" r="53" fill="currentColor"></circle></svg>
-                    <h3>Cash</h3>
-                </button>
-                <button @click="changepaymentInfo('orange-money')" :class="{ 'border-2': pm == 'orange-money' }" class="flex flex-col items-center gap-3 px-6  py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition">
-                    <img src="{% static '/images/logo-orange-money.png' %}" class="h-16 w-16 object-contain" alt="Orange Money">
-                    <h3>Orange Money</h3>
-                </button>
-                <button @click="changepaymentInfo('moov-money')"  :class="{ 'border-2': pm == 'moov-money' }" class="flex flex-col items-center gap-3 px-6  py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition">
-                    <img src="{% static '/images/logo-moov-money.png' %}" class="h-16 w-16 object-contain" alt="Moov Money">
-                    <h3>Moov Money</h3>
-                </button>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-gray-600 mb-2 block"> Adresse email </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                value="{{ user.email }}"
+                name="email"
+                placeholder="Email"
+              />
             </div>
+            <div>
+              <label class="text-gray-600 mb-2 block"> Numéro </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="phone"
+                placeholder="+223"
+                value="{{ user.phone }}"
+              />
+            </div>
+          </div>
         </div>
-        <!-- account content end -->
+        <div class="mt-6">
+          <button
+            type="submit"
+            class="px-6 py-2 text-center text-white bg-primary border border-primary rounded uppercase font-roboto font-medium"
+          >
+            <span x-show="!changeprofilInfoLoading">Enregistrer</span>
+            <svg
+              x-show="changeprofilInfoLoading"
+              class="h-6 w-10 fill-current text-white"
+              viewBox="0 0 135 140"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#fff"
+            >
+              <rect y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.5s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.5s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="30" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.25s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.25s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="60" width="15" height="140" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="90" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.25s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.25s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="120" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.5s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.5s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+            </svg>
+          </button>
+        </div>
+      </form>
     </div>
 
+    <!-- account content -->
+    <div
+      class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0"
+      x-show="tabIndex == 3"
+    >
+      <form
+        action="#"
+        method="post"
+        x-ref="chPwdForm"
+        x-on:submit="e => submitChangePassword(e, $refs.chPwdForm)"
+        class=""
+      >
+        {% csrf_token %}
+        <div class="space-y-4">
+          <div>
+            <label class="text-gray-600 mb-2 block">
+              Mot de passe actuelle
+            </label>
+            <div class="relative">
+              <span
+                @click="shOldPwd = !shOldPwd"
+                class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer"
+              >
+                <svg
+                  class="h-6 w-6"
+                  x-show="shOldPwd"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--fluent"
+                  width="32"
+                  height="32"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+                <svg
+                  class="h-6 w-6"
+                  x-show="!shOldPwd"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--fluent"
+                  width="32"
+                  height="32"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.097 8.097 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.09 7.09 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708l-15-15zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38l3.446 3.447z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10.123 8.002l3.375 3.374a3.5 3.5 0 0 0-3.374-3.374z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.648 7.648 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+              </span>
+              <input
+                :type="shOldPwd ? 'text' : 'password'"
+                name="password"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                placeholder="Entrez votre mot de passe"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="text-gray-600 mb-2 block">
+              Nouveau mot de passe
+            </label>
+            <div class="relative">
+              <span
+                @click="shNewPwd = !shNewPwd"
+                class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer"
+              >
+                <svg
+                  class="h-6 w-6"
+                  x-show="shNewPwd"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--fluent"
+                  width="32"
+                  height="32"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+                <svg
+                  class="h-6 w-6"
+                  x-show="!shNewPwd"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--fluent"
+                  width="32"
+                  height="32"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.097 8.097 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.09 7.09 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708l-15-15zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38l3.446 3.447z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10.123 8.002l3.375 3.374a3.5 3.5 0 0 0-3.374-3.374z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.648 7.648 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+              </span>
+              <input
+                :type="shNewPwd ? 'text' : 'password'"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="new_password"
+                placeholder="Entrez le nouveau mot de passe"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="text-gray-600 mb-2 block">
+              Confirmer le mot de passe
+            </label>
+            <div class="relative">
+              <span
+                @click="shConfirmPwd = !shConfirmPwd"
+                class="absolute right-3 top-3 text-sm text-gray-500 cursor-pointer"
+              >
+                <svg
+                  class="h-6 w-6"
+                  x-show="shConfirmPwd"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--fluent"
+                  width="32"
+                  height="32"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M3.26 11.602C3.942 8.327 6.793 6 10 6c3.206 0 6.057 2.327 6.74 5.602a.5.5 0 0 0 .98-.204C16.943 7.673 13.693 5 10 5c-3.693 0-6.943 2.673-7.72 6.398a.5.5 0 0 0 .98.204z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10 8a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm-2.5 3.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+                <svg
+                  class="h-6 w-6"
+                  x-show="!shConfirmPwd"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  aria-hidden="true"
+                  role="img"
+                  class="iconify iconify--fluent"
+                  width="32"
+                  height="32"
+                  preserveAspectRatio="xMidYMid meet"
+                  viewBox="0 0 20 20"
+                >
+                  <g fill="none">
+                    <path
+                      d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.097 8.097 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.09 7.09 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708l-15-15zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38l3.446 3.447z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10.123 8.002l3.375 3.374a3.5 3.5 0 0 0-3.374-3.374z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.648 7.648 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6z"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+              </span>
+              <input
+                :type="shConfirmPwd ? 'text' : 'password'"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="password_confirmation"
+                placeholder="Re-entrez le nouveau mot de passe"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mt-6">
+          <button
+            type="submit"
+            class="px-6 py-2 text-center text-white bg-primary border border-primary rounded transition uppercase font-roboto font-medium"
+          >
+            <span x-show="!changePasswordLoading">Enregistrer</span>
+            <svg
+              x-show="changePasswordLoading"
+              class="h-6 w-10 fill-current text-white"
+              viewBox="0 0 135 140"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#fff"
+            >
+              <rect y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.5s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.5s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="30" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.25s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.25s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="60" width="15" height="140" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="90" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.25s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.25s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="120" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.5s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.5s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- account content end -->
+
+    <!-- account content -->
+    <div
+      class="col-span-9 shadow rounded px-6 pt-5 pb-7 mt-6 lg:mt-0"
+      x-show="tabIndex == 1"
+    >
+      <form
+        action="#"
+        x-ref="addressForm"
+        method="post"
+        @submit="e => submitChangeAddress(e, $refs.addressForm)"
+      >
+        {% csrf_token %}
+        <div class="space-y-4">
+          <!-- Form row -->
+          <div class="grid sm:grid-cols-2 gap-4">
+            <!-- Single input -->
+            <div>
+              <label class="text-gray-600 mb-2 block"> Pays </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="country"
+                placeholder="Pays"
+                value="{{ address.country }}"
+              />
+            </div>
+            <!-- single input end -->
+            <!-- single input -->
+            <div>
+              <label class="text-gray-600 mb-2 block"> Ville </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="city"
+                value="{{ address.city }}"
+              />
+            </div>
+            <!-- Single input end -->
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-gray-600 mb-2 block"> Commune </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="common"
+                value="{{ address.common }}"
+              />
+            </div>
+
+            <div>
+              <label class="text-gray-600 mb-2 block"> Quartier </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="quarter"
+                value="{{ address.quarter }}"
+              />
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-gray-600 mb-2 block"> Rue et porte </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="streetDoor"
+                value="{{ address.street_door }}"
+              />
+            </div>
+
+            <div>
+              <label class="text-gray-600 mb-2 block">
+                Code postal (Optionel)
+              </label>
+              <input
+                type="text"
+                class="w-full block border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                name="zipcode"
+                value="{{ address.zipcode }}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mt-6">
+          <button
+            type="submit"
+            class="px-6 py-2 text-center text-white bg-primary border border-primary rounded transition uppercase font-roboto font-medium"
+          >
+            <span x-show="!changeAddressLoading">Enregistrer</span>
+            <svg
+              x-show="changeAddressLoading"
+              class="h-6 w-10 fill-current text-white"
+              viewBox="0 0 135 140"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#fff"
+            >
+              <rect y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.5s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.5s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="30" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.25s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.25s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="60" width="15" height="140" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="90" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.25s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.25s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="120" y="10" width="15" height="120" rx="6">
+                <animate
+                  attributeName="height"
+                  begin="0.5s"
+                  dur="1s"
+                  values="120;110;100;90;80;70;60;50;40;140;120"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="y"
+                  begin="0.5s"
+                  dur="1s"
+                  values="10;15;20;25;30;35;40;45;50;0;10"
+                  calcMode="linear"
+                  repeatCount="indefinite"
+                />
+              </rect>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="p-4 flex flex-col gap-3 items-center" x-show="tabIndex == 2">
+      <h1 class="w-full text-center">Methode de paiement</h1>
+      <div class="flex flex-col sm:flex-row border rounded overflow-hidden">
+        <button
+          @click="changepaymentInfo('cash')"
+          class="flex flex-col items-center gap-3 px-6 py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition"
+          :class="{ 'border-2': pm == 'cash' }"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            aria-hidden="true"
+            role="img"
+            class="h-16 w-16"
+            width="32"
+            height="32"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M466 355.9H46c-7.7 0-14 6.3-14 14s6.3 14 14 14h420c7.7 0 14-6.3 14-14s-6.3-14-14-14z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M466 403.9H46c-7.7 0-14 6.3-14 14s6.3 14 14 14h420c7.7 0 14-6.3 14-14s-6.3-14-14-14z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M444.9 80.1H67.1C47.8 80.1 32 95.9 32 115.2V293c0 19.3 15.8 35.1 35.1 35.1h377.8c19.3 0 35.1-15.8 35.1-35.1V115.2c0-19.3-15.8-35.1-35.1-35.1zM114 296.1H78c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm0-156H78c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm142 144c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80zm178 12h-36c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14zm0-156h-36c-7.7 0-14-6.3-14-14s6.3-14 14-14h36c7.7 0 14 6.3 14 14s-6.3 14-14 14z"
+              fill="currentColor"
+            ></path>
+            <circle cx="256" cy="206" r="53" fill="currentColor"></circle>
+          </svg>
+          <h3>Cash</h3>
+        </button>
+        <button
+          @click="changepaymentInfo('orange-money')"
+          :class="{ 'border-2': pm == 'orange-money' }"
+          class="flex flex-col items-center gap-3 px-6 py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition"
+        >
+          <img
+            src="{% static '/images/logo-orange-money.png' %}"
+            class="h-16 w-16 object-contain"
+            alt="Orange Money"
+          />
+          <h3>Orange Money</h3>
+        </button>
+        <button
+          @click="changepaymentInfo('moov-money')"
+          :class="{ 'border-2': pm == 'moov-money' }"
+          class="flex flex-col items-center gap-3 px-6 py-4 hover:pb-3.5 hover:border-b-2 border-indigo-700 transition"
+        >
+          <img
+            src="{% static '/images/logo-moov-money.png' %}"
+            class="h-16 w-16 object-contain"
+            alt="Moov Money"
+          />
+          <h3>Moov Money</h3>
+        </button>
+      </div>
+    </div>
+    <!-- account content end -->
+  </div>
 </div>
 
 <script defer>
-    let data = () => {
-        return {
-            tabIndex: document.querySelector('#tabs').getAttribute("default-tab-index"),
-            shOldPwd: false,
-            shNewPwd: false,
-            shConfirmPwd: false,
-            pm: '{{pm}}',
-            changePasswordLoading: false,
-            changeAddressLoading: false,
-            changeprofilInfoLoading: false,
-            changePaymentMethodLoading: false,
-            submitChangePassword: function(e, form) {
-                e.preventDefault()
-                notyf = new window.Notyf()
-                this.changePasswordLoading = true
-                const fD = new FormData(form)
-                axios.post("/api/account/change-password", fD).then(({
-                    data
-                }) => {
-                    if (data.isOk == true) {
-                        
-                        notyf.success('Terminé')
-                    } else if (data.error_type == "password-invalid") {
-                        notyf.error('Le mot de passe actuel est incorrecte')
-                    } else if (data.error_type == "fields-invalid") {
-                        notyf.error('Echec, vérifiez les champs')
-                    } else {
-                        notyf.error('L\opération à échouée')
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    notyf.error('Une erreur s\'est produite')
-                }).finally(() => {
-                    this.changePasswordLoading = false
-                })
-            },
-            submitChangeAddress: function(e, form) {
-                e.preventDefault()
-                notyf = new window.Notyf()
-                this.changeAddressLoading = true
-                const fD = new FormData(form)
-                axios.post("/api/account/change-addresses-info", fD).then(({
-                    data
-                }) => {
-                    if (data.isOk == true) {
-                        notyf.success('Terminé')
-                    } else {
-                        notyf.error('L\opération à échouée')
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    notyf.error('Une erreur s\'est produite, actualisez')
-                }).finally(() => {
-                    this.changeAddressLoading = false
-                })
-            },
-            submitChangeprofilInfo: function(e, form) {
-                
-                notyf = new window.Notyf()
-                this.changeprofilInfoLoading = true
-                const fD = new FormData(form)
-                axios.post("/api/account/change-profil-info", fD).then(({
-                    data
-                }) => {
-                    if (data.isOk == true) {
-                        notyf.success('Terminé')
-                    } else {
-                        notyf.error('L\opération à échouée')
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    notyf.error('Une erreur s\'est produite, actualisez')
-                }).finally(() => {
-                    this.changeprofilInfoLoading = false
-                })
-            },
-            changepaymentInfo: function(method) {
-                const csrftoken = document.querySelector("div#csrf input[name='csrfmiddlewaretoken']").getAttribute("value")
-                axios.defaults.headers.common['X-CSRFTOKEN'] = csrftoken;
-                
-                notyf = new window.Notyf()
-                this.changePaymentMethodLoading = true
-                axios.post("/api/account/change-payment-info", {method}).then(({
-                    data
-                }) => {
-                    if (data.isOk == true) {
-                        this.pm = method
-                        notyf.success('Methode de paiement changée')
-                    } else if (data.error_type == 'not-logged') {
-                        window.location.href = "/connexion"
-                    }
-                    else {
-                        notyf.error('L\opération à échouée')
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    notyf.error('Une erreur s\'est produite, actualisez')
-                }).finally(() => {
-                    this.changePaymentMethodLoading = false
-                })
-            },
-            submitChangePaymentMethod: function(e, form) {
-                e.preventDefault()
-                notyf = new window.Notyf()
-                this.changePaymentMethodLoading = true
-                const fD = new FormData(form)
-                axios.post("/api/account/change-payment-info", fD).then(({
-                    data
-                }) => {
-                    console.log(data);
-                }).catch(err => {
-                    console.log(err);
-                }).finally(() => {
-                    this.changePaymentMethodLoading = false
-                })
-            },
+  let data = () => {
+    return {
+      tabIndex: document
+        .querySelector("#tabs")
+        .getAttribute("default-tab-index"),
+      shOldPwd: false,
+      shNewPwd: false,
+      shConfirmPwd: false,
+      pm: "{{pm}}",
+      changePasswordLoading: false,
+      changeAddressLoading: false,
+      changeprofilInfoLoading: false,
+      changePaymentMethodLoading: false,
+      submitChangePassword: function (e, form) {
+        e.preventDefault();
+        notyf = new window.Notyf();
+        this.changePasswordLoading = true;
+        const fD = new FormData(form);
+        axios
+          .post("/api/account/change-password", fD)
+          .then(({ data }) => {
+            if (data.isOk == true) {
+              notyf.success("Terminé");
+            } else if (data.error_type == "password-invalid") {
+              notyf.error("Le mot de passe actuel est incorrecte");
+            } else if (data.error_type == "fields-invalid") {
+              notyf.error("Echec, vérifiez les champs");
+            } else {
+              notyf.error("L\opération à échouée");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            notyf.error("Une erreur s'est produite");
+          })
+          .finally(() => {
+            this.changePasswordLoading = false;
+          });
+      },
+      submitChangeAddress: function (e, form) {
+        e.preventDefault();
+        notyf = new window.Notyf();
+        this.changeAddressLoading = true;
+        const fD = new FormData(form);
+        axios
+          .post("/api/account/change-addresses-info", fD)
+          .then(({ data }) => {
+            if (data.isOk == true) {
+              notyf.success("Terminé");
+            } else {
+              notyf.error("L\opération à échouée");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            notyf.error("Une erreur s'est produite, actualisez");
+          })
+          .finally(() => {
+            this.changeAddressLoading = false;
+          });
+      },
+      submitChangeprofilInfo: function (e, form) {
+        notyf = new window.Notyf();
+        this.changeprofilInfoLoading = true;
+        const fD = new FormData(form);
+        axios
+          .post("/api/account/change-profil-info", fD)
+          .then(({ data }) => {
+            if (data.isOk == true) {
+              notyf.success("Terminé");
+            } else {
+              notyf.error("L\opération à échouée");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            notyf.error("Une erreur s'est produite, actualisez");
+          })
+          .finally(() => {
+            this.changeprofilInfoLoading = false;
+          });
+      },
+      changepaymentInfo: function (method) {
+        const csrftoken = document
+          .querySelector("div#csrf input[name='csrfmiddlewaretoken']")
+          .getAttribute("value");
+        axios.defaults.headers.common["X-CSRFTOKEN"] = csrftoken;
 
-
-        }
-    }
+        notyf = new window.Notyf();
+        this.changePaymentMethodLoading = true;
+        axios
+          .post("/api/account/change-payment-info", { method })
+          .then(({ data }) => {
+            if (data.isOk == true) {
+              this.pm = method;
+              notyf.success("Methode de paiement changée");
+            } else if (data.error_type == "not-logged") {
+              window.location.href = "/connexion";
+            } else {
+              notyf.error("L\opération à échouée");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            notyf.error("Une erreur s'est produite, actualisez");
+          })
+          .finally(() => {
+            this.changePaymentMethodLoading = false;
+          });
+      },
+      submitChangePaymentMethod: function (e, form) {
+        e.preventDefault();
+        notyf = new window.Notyf();
+        this.changePaymentMethodLoading = true;
+        const fD = new FormData(form);
+        axios
+          .post("/api/account/change-payment-info", fD)
+          .then(({ data }) => {
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            this.changePaymentMethodLoading = false;
+          });
+      },
+    };
+  };
 </script>
 {% endblock content %}

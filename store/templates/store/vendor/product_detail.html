@@ -1,0 +1,24 @@
+{% extends 'store/layout/base.html' %}
+<!-- Vendor Product Detail -->
+{% block titre %} Product Detail {% endblock titre %} {% block content %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">{{ product.name }}</h1>
+  <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+    <div class="mb-4">
+      <h2 class="text-xl font-semibold">Product Information</h2>
+      <p><strong>Price:</strong> ${{ product.price }}</p>
+      <p><strong>Stock:</strong> {{ product.stock }}</p>
+      <p><strong>Status:</strong> {{ product.status }}</p>
+      <p><strong>Description:</strong> {{ product.description }}</p>
+    </div>
+    <div class="mb-4">
+      <h2 class="text-xl font-semibold">Actions</h2>
+      <a
+        href="{% url 'vendor_edit_product' product.pk %}"
+        class="text-indigo-600 hover:text-indigo-800"
+        >Edit Product</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock content %}
