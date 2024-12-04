@@ -1,4 +1,4 @@
-# Image de base légère
+# Image de base légère compatible linux/amd64 : docker build --platform linux/amd64 -t sigida-app:latest .
 FROM python:3.10-slim
 
 # Le répertoire de travail
@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copie du code source
 COPY . .
+
+# Build Tailwind CSS
+RUN python3 manage.py tailwind build
 
 # Exposer le port d'acces
 EXPOSE 8000
