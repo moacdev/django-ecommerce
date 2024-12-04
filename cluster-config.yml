@@ -4,13 +4,13 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 # Metadata for the cluster
 metadata:
-  name: sigida-cluster
+  name: sigida-app-cluster
   region: us-east-2
 # Node groups for the cluster
 nodeGroups:
   - name: staging-node-group
     # Instance type for the node group
-    instanceType: t2.micro
+    instanceType: t2.small
     # Desired capacity for the node group
     desiredCapacity: 1
     # Minimum size for the node group
@@ -31,7 +31,7 @@ nodeGroups:
 
   - name: prod-node-group
     # Instance type for the node group
-    instanceType: t2.micro
+    instanceType: t2.small
     # Desired capacity for the node group
     desiredCapacity: 2
     # Minimum size for the node group

@@ -1,39 +1,55 @@
 name: Deploy to Server
+
 on:
   push:
     branches:
       - staging
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Étape 1 : Checkout du code source
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      # Étape 2 : Configuration de Python (si nécessaire)
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+
+      # Étape 3 : Installation des dépendances
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
+
+      # Étape 4 : Exécution des tests
       - name: Run Tests
         run: |
           python manage.py test
+
+      # Étape 5 : Connexion à Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Étape 6 : Extraction du dernier tag et génération du nouveau tag
       - name: Extract Latest Tag
         id: tag
         run: |
-          # Pull the latest image to get the current tag
+          # Tenter de tirer la dernière image pour obtenir le tag actuel
           LATEST_TAG=$(docker pull mdarker999/sigida-app:latest 2>/dev/null && docker inspect mdarker999/sigida-app:latest --format '{{ .RepoTags }}' | grep -o '[0-9]\+\.[0-9]\+' | tail -1 || echo "0.0")
           IFS='.' read -r MAJOR MINOR <<< "$LATEST_TAG"
           NEW_TAG="$MAJOR.$((MINOR+1))"
           echo "new_tag=$NEW_TAG" >> $GITHUB_ENV
           echo "Latest tag: $LATEST_TAG, New tag: $NEW_TAG"
+
+      # Étape 7 : Déterminer le tag d'image pour Staging ou Production
       - name: Determine Image Tag for Staging or Production
         id: set_tag
         run: |
@@ -44,11 +60,51 @@ jobs:
           fi
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
           echo "Image Tag: $IMAGE_TAG"
+
+      # Étape 8 : Construction de l'image Docker
       - name: Build Docker Image
         run: |
           docker build -t mdarker999/sigida-app:$IMAGE_TAG .
           docker tag mdarker999/sigida-app:$IMAGE_TAG mdarker999/sigida-app:latest
+
+      # Étape 9 : Push de l'image Docker
       - name: Push Docker Image
         run: |
           docker push mdarker999/sigida-app:$IMAGE_TAG
           docker push mdarker999/sigida-app:latest
+
+      # Étape 10 : Configuration des identifiants AWS
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Étape 11 : Installation de kubectl
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: "latest"
+
+      # Étape 12 : Configuration de kubeconfig pour EKS
+      - name: Configure kubectl for EKS
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+
+      # Étape 13 : Mise à jour du déploiement Kubernetes avec la nouvelle image
+      - name: Deploy to EKS
+        run: |
+          # Déterminer le namespace et le déploiement en fonction de la branche
+          if [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
+            NAMESPACE="staging"
+            DEPLOYMENT="ecommerce-app"
+          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            NAMESPACE="prod"
+            DEPLOYMENT="ecommerce-app"
+          fi
+
+          # Mettre à jour l'image du déploiement
+          kubectl set image deployment/$DEPLOYMENT ecommerce-container=mdarker999/sigida-app:$IMAGE_TAG -n $NAMESPACE
+
+          kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE
