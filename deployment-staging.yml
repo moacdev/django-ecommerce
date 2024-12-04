@@ -2,8 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ecommerce-app
+  namespace: staging
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: ecommerce
@@ -14,6 +15,6 @@ spec:
     spec:
       containers:
         - name: ecommerce-container
-          image: sigida:1.0.0
+          image: mdarker999/sigida-app:latest
           ports:
             - containerPort: 8000

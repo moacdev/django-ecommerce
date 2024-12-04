@@ -1,0 +1,54 @@
+name: Deploy to Server
+on:
+  push:
+    branches:
+      - staging
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          python manage.py test
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Extract Latest Tag
+        id: tag
+        run: |
+          # Pull the latest image to get the current tag
+          LATEST_TAG=$(docker pull mdarker999/sigida-app:latest 2>/dev/null && docker inspect mdarker999/sigida-app:latest --format '{{ .RepoTags }}' | grep -o '[0-9]\+\.[0-9]\+' | tail -1 || echo "0.0")
+          IFS='.' read -r MAJOR MINOR <<< "$LATEST_TAG"
+          NEW_TAG="$MAJOR.$((MINOR+1))"
+          echo "new_tag=$NEW_TAG" >> $GITHUB_ENV
+          echo "Latest tag: $LATEST_TAG, New tag: $NEW_TAG"
+      - name: Determine Image Tag for Staging or Production
+        id: set_tag
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
+            IMAGE_TAG="staging-$NEW_TAG"
+          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            IMAGE_TAG="prod-$NEW_TAG"
+          fi
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+          echo "Image Tag: $IMAGE_TAG"
+      - name: Build Docker Image
+        run: |
+          docker build -t mdarker999/sigida-app:$IMAGE_TAG .
+          docker tag mdarker999/sigida-app:$IMAGE_TAG mdarker999/sigida-app:latest
+      - name: Push Docker Image
+        run: |
+          docker push mdarker999/sigida-app:$IMAGE_TAG
+          docker push mdarker999/sigida-app:latest

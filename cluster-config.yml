@@ -1,0 +1,48 @@
+# cluster-config.yml
+# Config information for the EKS cluster
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+# Metadata for the cluster
+metadata:
+  name: sigida-cluster
+  region: us-east-2
+# Node groups for the cluster
+nodeGroups:
+  - name: staging-node-group
+    # Instance type for the node group
+    instanceType: t2.micro
+    # Desired capacity for the node group
+    desiredCapacity: 1
+    # Minimum size for the node group
+    minSize: 1
+    # Maximum size for the node group
+    maxSize: 2
+    # SSH access for the node group
+    ssh:
+      allow: true
+      # Public key name for the node group
+      publicKeyName: eks-key
+    # Labels for the node group
+    labels:
+      role: staging
+    # Tags for the node group
+    tags:
+      env: staging
+
+  - name: prod-node-group
+    # Instance type for the node group
+    instanceType: t2.micro
+    # Desired capacity for the node group
+    desiredCapacity: 2
+    # Minimum size for the node group
+    minSize: 2
+    # Maximum size for the node group
+    maxSize: 3
+    ssh:
+      # SSH access for the node group
+      allow: true
+      publicKeyName: eks-key
+    labels:
+      role: production
+    tags:
+      env: production
