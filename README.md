@@ -38,16 +38,16 @@ static => Dossier contenant les fichiers static accessible directement depuis l'
 
 ## Deployement step by step
 
-| eksctl create cluster -f cluster-config.yml # Création du cluster EKS
-| kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.13.1/cert-manager.yaml # Certificat Let's Encrypt
-| kubectl apply -f cluster-issuer.yml # Certificat Let's Encrypt
-| kubectl create namespace staging # Création du namespace staging
-| kubectl create namespace prod # Création du namespace prod
-| kubectl create namespace ingress-nginx # Création du namespace ingress-nginx
-| kubectl apply -f ingress-nginx-nlb-service.yml # Service Ingress Nginx
-| kubectl apply -f staging-ingress.yml -n staging # Ingress pour le staging
-| kubectl apply -f prod-ingress.yml -n prod # Ingress pour le prod
-| kubectl apply -f service.yml -n staging # Service pour le staging
-| kubectl apply -f service.yml -n prod # Service pour le prod
-| kubectl apply -f deployment-staging.yml -n staging # Deployment pour le staging
-| kubectl apply -f deployment-prod.yml -n prod # Deployment pour le prod
+|> eksctl create cluster -f cluster-config.yml # Création du cluster EKS
+|> kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.13.1/cert-manager.yaml # Certificat Let's Encrypt
+|> kubectl apply -f cluster-issuer.yml # Certificat Let's Encrypt
+|> kubectl create namespace staging # Création du namespace staging
+|> kubectl create namespace prod # Création du namespace prod
+|> kubectl create namespace ingress-nginx # Création du namespace ingress-nginx
+|> kubectl apply -f ingress-nginx-nlb-service.yml # Service Ingress Nginx
+|> kubectl apply -f staging-ingress.yml -n staging # Ingress pour le staging
+|> kubectl apply -f prod-ingress.yml -n prod # Ingress pour le prod
+|> kubectl apply -f service.yml -n staging # Service pour le staging
+|> kubectl apply -f service.yml -n prod # Service pour le prod
+|> kubectl apply -f deployment-staging.yml -n staging # Deployment pour le staging
+|> kubectl apply -f deployment-prod.yml -n prod # Deployment pour le prod
